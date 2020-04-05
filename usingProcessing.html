@@ -1,20 +1,14 @@
 <!DOCTYPE html>
-<!-- This is based on DillingerLee's great template here:
-https://github.com/Team-Code/KA_Offline -->
 <html> 
  <head>
     <title>Processing.JS inside Webpages: Template</title> 
 </head>
  <body>
     <p align="center"> 
-	<!--This draws the Canvas on the webpage -->
       <canvas id="mycanvas"></canvas> 
     </p>
  </body>
  
- <!-- Run all the JavaScript stuff -->
- <!-- Include the processing.js library -->
- <!-- See https://khanacademy.zendesk.com/hc/en-us/articles/202260404-What-parts-of-ProcessingJS-does-Khan-Academy-support- for differences -->
  <script src="https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js"></script> 
  
  <script>
@@ -23,9 +17,8 @@ https://github.com/Team-Code/KA_Offline -->
         size(800, 650); 
         frameRate(30);
 
-        // ProgramCodeGoesHere
+        //Array of arrays of random mumbers to make Buildings
         let arrayOfRandomNumbers = []
-        
         for (var i = 0; i < 60; i++) {
           var ranX = random(-40, 800);
           var ranH = random(40, 50);
@@ -36,29 +29,52 @@ https://github.com/Team-Code/KA_Offline -->
         var sunMovement = 650;
         draw = function () {
           background(161, 246, 252);
-          fill(255, 255, 0);
           
+
+          //Sun
+          fill(255, 255, 0);
           noStroke();
           ellipse(200, sunMovement, 200, 200);
           noFill();
           stroke(0, 0, 0);
-          strokeWeight(2);
+          strokeWeight(3);
           arc(200, sunMovement, 150, 100, 0, PI);
           fill(0, 0, 0);
           ellipse(250, sunMovement, 10, 10);
           ellipse(153, sunMovement, 10, 10);
           sunMovement-=3;
           
-          fill(180, 220, 220);
-          
+
+          //Transamerica Pyramid Building
+          fill(200, 220, 220);
+          triangle(100, 420, 150, 120, 200, 420);
+          rect(140, 195, 20, 100);
+
+
+          //Salesforce building
+          fill(160, 220, 220);
+          ellipse(520, 200, 50, 300);
+
+          strokeWeight(3);
+          line(505, 80, 534, 80);
+
+          noStroke();
+          fill(161, 246, 252);
+          rect(500, 40, 40, 40);
+
+
+          //Buildings of the city
+          stroke(0, 0, 0);          
+          fill(180, 220, 220);          
           for (var j = 0; j < arrayOfRandomNumbers.length; j++) {
             rect(arrayOfRandomNumbers[j][0], 400,
-                 arrayOfRandomNumbers[j][1],
-                 arrayOfRandomNumbers[j][2]);
+            arrayOfRandomNumbers[j][1],
+            arrayOfRandomNumbers[j][2]);
           }
+          
 
-          fill(250, 0, 0);
-  
+          //Painted ladies
+          fill(225, 204, 127);
           var moveToX = -10;
           var moveToY = -60;
             
@@ -89,29 +105,29 @@ https://github.com/Team-Code/KA_Offline -->
           };
           newHouse(6);
 
+
+          //Crosswalk
           fill(80, 80, 80);
           quad(0, 650, 0, 570, 1000, 495, 650, 800);
           
+
+          //Street
           fill(120, 120, 120);
           quad(0, 650, 0, 580, 1000, 505, 650, 800);
           
+
+          //Upper Green field
           fill(0, 180, 0);
           quad(0, 650, 0, 570, 1000, 610, 650, 800);
           
+
+          //Lower Green Field
           fill(0, 255, 0);
           rect(0, 620, 800, 30)
-          
         }
-        
-        
-
-
-
     }};
 
-    // Get the canvas that Processing-js will use
     var canvas = document.getElementById("mycanvas"); 
-    // Pass the function sketchProc (defined in myCode.js) to Processing's constructor.
     var processingInstance = new Processing(canvas, sketchProc); 
  </script>
 
