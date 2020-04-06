@@ -20,15 +20,36 @@
         //Array of arrays of random mumbers to make Buildings
         let arrayOfRandomNumbers = []
         for (var i = 0; i < 60; i++) {
-          var ranX = random(-40, 800);
-          var ranH = random(40, 50);
-          var ranW = random(-200, -100);
-          arrayOfRandomNumbers.push([ranX, ranH, ranW]);
+          var randomX = random(-40, 800);
+          var randomWeigth = random(30, 50);
+          var randomHeight = random(-200, -100);
+          arrayOfRandomNumbers.push([randomX, randomWeigth, randomHeight]);
         }
 
-        var sunMovement = 650;
+
+        //Object of clouds information
+        let objectOfCloudsInformation = {};
+        for (var i = 1; i < 7; i++) {
+          var randomXForClouds = random(0, 800);
+          var randomSpeedForClouds = random(1, 5);
+          objectOfCloudsInformation[i] = [((50 * i) - 50), randomSpeedForClouds, randomXForClouds];          
+        }
+
+
+        //Variable for the Sun
+        var sunMovement = 380;
+        var colorOfSky = [0, 228, 255];
+
+
+        //Variables for the moon
+        var moveMoonX = 850;
+        var moveMoonY = 200;
+        var moonPhase = 1;
+
+
         draw = function () {
-          background(161, 246, 252);
+          //Sky
+          background(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
           
 
           //Sun
@@ -42,27 +63,85 @@
           fill(0, 0, 0);
           ellipse(250, sunMovement, 10, 10);
           ellipse(153, sunMovement, 10, 10);
-          sunMovement-=3;
+          sunMovement -= 5;
           
+          if (colorOfSky[2] <= 60 && sunMovement === -1300) {
+            sunMovement = 750;
+          }
+
+        
+          //Moon
+          if (colorOfSky[2] <= 160) {
+            noStroke();
+            fill(255, 255, 255);
+            ellipse(moveMoonX, moveMoonY, 50, 50);
+
+            if (moonPhase === 1) {
+              fill(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
+              ellipse(moveMoonX - 10, moveMoonY, 50, 50);
+            } else if (moonPhase === 2) {
+              fill(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
+              rect(moveMoonX - 50, moveMoonY - 30, 50, 70);
+            } else if (moonPhase > 3) {
+              moonPhase = 1
+            }
+            
+            moveMoonX -= 2;
+            moveMoonY -= 2;
+          } else {
+            moveMoonX = 850;
+            moveMoonY = 200;
+
+          }
+          if (colorOfSky[2] === 161) {
+            moonPhase += 1;
+          }
+
 
           //Transamerica Pyramid Building
+          stroke(0, 0, 0);
           fill(200, 220, 220);
-          triangle(100, 420, 150, 120, 200, 420);
-          rect(140, 195, 20, 100);
+          triangle(100, 450, 150, 150, 200, 450);
+          rect(140, 225, 20, 100);
 
 
           //Salesforce building
           fill(160, 220, 220);
-          ellipse(520, 200, 50, 300);
+          ellipse(520, 270, 50, 370);
 
           strokeWeight(3);
-          line(505, 80, 534, 80);
+          line(505, 120, 534, 120);
 
           noStroke();
-          fill(161, 246, 252);
-          rect(500, 40, 40, 40);
+          fill(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
+          rect(500, 79, 40, 40);
 
 
+          //Clouds 
+          noStroke();
+          fill(255, 255, 255);
+
+          for (let key in objectOfCloudsInformation) {
+            ellipse(objectOfCloudsInformation[key][2]     , objectOfCloudsInformation[key][0], 126, 97);
+            ellipse(objectOfCloudsInformation[key][2] + 62, objectOfCloudsInformation[key][0], 70 , 60);
+            ellipse(objectOfCloudsInformation[key][2] - 62, objectOfCloudsInformation[key][0], 70 , 60);
+            
+            if (key % 2 === 0) {
+              if (objectOfCloudsInformation[key][2] > 1000) {
+                objectOfCloudsInformation[key][2] = -200;
+              } else {
+                objectOfCloudsInformation[key][2] += objectOfCloudsInformation[key][1];
+              }
+            } else {
+              if (objectOfCloudsInformation[key][2] < -100) {
+                objectOfCloudsInformation[key][2] = 1000;
+              } else {
+                objectOfCloudsInformation[key][2] -= objectOfCloudsInformation[key][1];
+              }
+            }
+          }
+
+    
           //Buildings of the city
           stroke(0, 0, 0);          
           fill(180, 220, 220);          
@@ -80,15 +159,11 @@
             
           var newHouse = function (number) {
             for (let i = 0; i < number; i++) {
+              fill(225, 204, 127);
               rect(10 + moveToX, 450 + moveToY, 120, 180);
               triangle(5  + moveToX, 450 + moveToY,
                       70  + moveToX, 385 + moveToY,
                       135 + moveToX, 450 + moveToY
-              );
-              quad(70 + moveToX, 385 + moveToY,
-                  135 + moveToX, 450 + moveToY,
-                  270 + moveToX, 440 + moveToY,
-                  200 + moveToX, 380 + moveToY
               );
 
               quad(130 + moveToX, 450 + moveToY,
@@ -96,8 +171,13 @@
                    265 + moveToX, 610 + moveToY,
                    265 + moveToX, 440 + moveToY
               );
+              fill(40, 40, 40);
+              quad(70 + moveToX, 385 + moveToY,
+                  135 + moveToX, 450 + moveToY,
+                  270 + moveToX, 440 + moveToY,
+                  200 + moveToX, 380 + moveToY
+              );
 
-              
               moveToX += 130;
               moveToY -= 10;
             } 
@@ -124,6 +204,30 @@
           //Lower Green Field
           fill(0, 255, 0);
           rect(0, 620, 800, 30)
+
+
+          //Altering the sky
+          if (sunMovement < -400 && colorOfSky[2] > 0) {
+            if (colorOfSky[1] > 0) {
+              colorOfSky[1] -= 5;
+            } else {
+              colorOfSky[1] = 0;
+              if (colorOfSky[2] <= 40) {
+                colorOfSky[2] = 40;
+              } else {
+                colorOfSky[2] -= 5;
+              }
+            }
+          } else if (sunMovement > -200 && colorOfSky[1] < 228) {
+            if (colorOfSky[2] < 255) {
+              colorOfSky[2] += 4;
+            } else {
+              colorOfSky[1] += 4;
+            }
+          }
+
+          //Altering sun behavior
+
         }
     }};
 
