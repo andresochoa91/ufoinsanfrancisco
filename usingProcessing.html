@@ -390,22 +390,27 @@
             }
           }
         
+
+
           //UFO
           let ufo = function () {
             let mouseXForUFO = mouseX;
             let mouseYForUFO = mouseY;
+            var sizeOfUFO = mouseYForUFO * 0.006;
   
-            if (mouseYForUFO > 280) {
-              mouseYForUFO = 280;0
-              mouseXForUFO = -1000;
+            if (mouseYForUFO > 230) {
+              mouseYForUFO = 230;
+              sizeOfUFO = 1.4;
             }
   
             fill(38, 25, 25);
-            ellipse(mouseXForUFO, mouseYForUFO, 70, 70);
+            ellipse(mouseXForUFO, mouseYForUFO + (sizeOfUFO * 1) ,  70 * sizeOfUFO, 70 * sizeOfUFO);
+
             fill(112, 59, 112);
-            ellipse(mouseXForUFO, mouseYForUFO + 15, 150, 50);
+            ellipse(mouseXForUFO, mouseYForUFO + (sizeOfUFO * 15), 150 * sizeOfUFO, 50 * sizeOfUFO);
+
             fill(255, 255, 255);
-            ellipse(mouseXForUFO, mouseYForUFO + 30, 70, 25);
+            ellipse(mouseXForUFO, mouseYForUFO + (sizeOfUFO * 30),  70 * sizeOfUFO, 25 * sizeOfUFO);
           }
         
         draw = function () {
