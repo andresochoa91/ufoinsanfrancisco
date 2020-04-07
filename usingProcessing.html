@@ -17,34 +17,62 @@
         size(800, 650); 
         frameRate(30);
 
+        //VARIABLES
         //variables for stars
-        var sizeXStar = 0.0010;
-        var sizeYStar = 0.0010;
-        var isMidnight = false;
+        let sizeXStar = 0.0010;
+        let sizeYStar = 0.0010;
+        let isMidnight = false;
 
         //Variable for the Sun
-        var sunMovement = 380;
+        let sunMovement = 380;
 
         //Variables for the moon
-        var moveMoonX = 850;
-        var moveMoonY = 200;
-        var moonPhase = 1;
+        let moveMoonX = 850;
+        let moveMoonY = 200;
+        let moonPhase = 1;
 
         //Variables for Characters
-        var positionXCharacter = 740;
-        var positionYCharacter = 45;
-
+        let positionXCharacter = 740;
+        let positionYCharacter = 45;
+        
+        //Variable Color of sky
+        let colorOfSky = [0, 228, 255];
+        
+        
+        //ARRAYS
         //Array with random positions for characters
-        var arrayOfPositionsCharacters = [];
-        for (var i = 0; i < 10; i++) {
-          var randomXForCharacters = random(0, 740);
-          var randomYForCharacters = random(0, 45);
-          var randomSpeedForCharacters = random(1, 10);
+        let arrayOfPositionsCharacters = [];
+        for (let i = 0; i < 10; i++) {
+          let randomXForCharacters = random(0, 740);
+          let randomYForCharacters = random(0, 45);
+          let randomSpeedForCharacters = random(1, 10);
           arrayOfPositionsCharacters.push([randomXForCharacters, randomYForCharacters, randomSpeedForCharacters]);
         }
+ 
+        //Arrays to define color of buildings
+        let colorsForBuildings = [180, 220, 220]
+        
+        //Array of arrays of random mumbers to make buildings
+        let arrayOfRandomNumbers = []
+        for (let i = 0; i < 60; i++) {
+          let randomX = random(-40, 800);
+          let randomWeigth = random(30, 50);
+          let randomHeight = random(-200, -100);
+          arrayOfRandomNumbers.push([randomX, randomWeigth, randomHeight]);
+        }
+        
+        //Array with position of random stars
+        let arrayOfStars = [];
+        for (let i = 0; i < 50; i++) {
+          let randomXStars = random(0, 800);
+          let randomYStars = random(0, 400);
+          arrayOfStars.push([randomXStars, randomYStars]); 
+        }
 
+        
+        //OBJECTS
         //Objects with colors for painted ladies
-        var colorsForPaitedLadiesNight = {
+        let colorsForPaintedLadiesNight = {
           0: [255, 0, 0],
           1: [255, 133, 0],
           2: [255, 255, 0],
@@ -53,7 +81,7 @@
           5: [133, 0, 255]
         }
 
-        var colorsForPaitedLadiesDay = {
+        let colorsForPaintedLadiesDay = {
           0: [227, 221, 153],
           1: [183, 193, 159],
           2: [251, 255, 108],
@@ -61,41 +89,18 @@
           4: [84, 89, 255],
           5: [242, 172, 97]
         }
-
-        //Arrays to define color of buildings
-        var colorsForBuildings = [180, 220, 220]
-
-        //Array of arrays of random mumbers to make buildings
-        var arrayOfRandomNumbers = []
-        for (var i = 0; i < 60; i++) {
-          var randomX = random(-40, 800);
-          var randomWeigth = random(30, 50);
-          var randomHeight = random(-200, -100);
-          arrayOfRandomNumbers.push([randomX, randomWeigth, randomHeight]);
-        }
-
-        //Array with position of random stars
-        var arrayOfStars = [];
-        for (var i = 0; i < 50; i++) {
-          var randomXStars = random(0, 800);
-          var randomYStars = random(0, 400);
-          arrayOfStars.push([randomXStars, randomYStars]); 
-        }
-                
+        
         //Object of clouds information
-        var objectOfCloudsInformation = {};
-        for (var i = 1; i < 7; i++) {
-          var randomXForClouds = random(0, 800);
-          var randomSpeedForClouds = random(1, 5);
+        let objectOfCloudsInformation = {};
+        for (let i = 1; i < 7; i++) {
+          let randomXForClouds = random(0, 800);
+          let randomSpeedForClouds = random(1, 5);
           objectOfCloudsInformation[i] = [((50 * i) - 50), randomSpeedForClouds, randomXForClouds];          
         }
 
-        //Color of sky
-        var colorOfSky = [0, 228, 255];
-
-        draw = function () {
-          
-          //Sky          
+        //FUNCTIONS
+        //Sky
+        let sky = function () {
           background(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
           if (sunMovement < -400 && colorOfSky[2] > 0) {
             if (colorOfSky[1] > 0) {
@@ -115,8 +120,10 @@
               colorOfSky[1] += 4;
             }
           }
+        }  
 
-          //Sun
+        //Sun
+        let sun = function () {
           fill(255, 255, 0);
           noStroke();
           ellipse(200, sunMovement, 200, 200);
@@ -132,8 +139,10 @@
           if (colorOfSky[2] <= 60 && sunMovement === -1300) {
             sunMovement = 750;
           }
-        
-          //Moon
+        }
+
+        //Moon
+        let moon = function () {
           if (colorOfSky[2] <= 160) {
             noStroke();
             fill(255, 255, 255);
@@ -148,19 +157,19 @@
             } else if (moonPhase > 3) {
               moonPhase = 1
             }
-            
             moveMoonX -= 2;
             moveMoonY -= 2;
           } else {
             moveMoonX = 850;
             moveMoonY = 200;
-
           }
           if (colorOfSky[2] === 161) {
             moonPhase += 1;
           }
+        }
 
-          //Stars
+        //Stars
+        let stars = function () {
           for (var i = 0; i < arrayOfStars.length; i++) {
             
             if (colorOfSky[2] < 255) {
@@ -190,30 +199,33 @@
               }
             } 
           }
+        }
 
-          //Transamerica Pyramid Building
-
+        //Transamerica Pyramid
+        let pyramid = function () {
           stroke(0, 0, 0);
-          var randomColor1 = random(0, 255);
-          var randomColor2 = random(0, 255);
-          var randomColor3 = random(0, 255);
+          let randomColor1Pyramid = random(0, 255);
+          let randomColor2Pyramid = random(0, 255);
+          let randomColor3Pyramid = random(0, 255);
 
           if (colorOfSky[2] < 255) {
-            fill(randomColor1, randomColor2, randomColor3);
+            fill(randomColor1Pyramid, randomColor2Pyramid, randomColor3Pyramid);
           } else {
             fill(colorsForBuildings[0], colorsForBuildings[1], colorsForBuildings[2]);
           }
 
           triangle(100, 450, 150, 150, 200, 450);
           rect(140, 225, 20, 100);
+        }
 
-          //Salesforce building
-          var randomColor1 = random(0, 255);
-          var randomColor2 = random(0, 255);
-          var randomColor3 = random(0, 255);
+        //Salesforse Building
+        let salesforce = function () {
+          let randomColor1Salesforce = random(0, 255);
+          let randomColor2Salesforce = random(0, 255);
+          let randomColor3Salesforce = random(0, 255);
 
           if (colorOfSky[2] < 255) {
-            fill(randomColor1, randomColor2, randomColor3);
+            fill(randomColor1Salesforce, randomColor2Salesforce, randomColor3Salesforce);
           } else {
             fill(colorsForBuildings[0], colorsForBuildings[1], colorsForBuildings[2]);
           }
@@ -226,12 +238,14 @@
           noStroke();
           fill(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
           rect(500, 79, 40, 40);
+        }
 
-          //Clouds 
+        //Clouds
+        let clouds = function () {
           noStroke();
           fill(255, 255, 255);
 
-          for (var key in objectOfCloudsInformation) {
+          for (let key in objectOfCloudsInformation) {
 
             ellipse(objectOfCloudsInformation[key][2]     , objectOfCloudsInformation[key][0], 126, 97);
             ellipse(objectOfCloudsInformation[key][2] + 62, objectOfCloudsInformation[key][0], 70 , 60);
@@ -251,18 +265,20 @@
               }
             }
           }
-    
-          //Buildings of the city
+        }
+        
+        //Buildings of the city
+        let buildings = function () {
           stroke(0, 0, 0);
 
-          for (var j = 0; j < arrayOfRandomNumbers.length; j++) {
+          for (let j = 0; j < arrayOfRandomNumbers.length; j++) {
           
-            var randomColor1 = random(0, 255);
-            var randomColor2 = random(0, 255);
-            var randomColor3 = random(0, 255);
+            let randomColor1Buildings = random(0, 255);
+            let randomColor2Buildings = random(0, 255);
+            let randomColor3Buildings = random(0, 255);
 
             if (colorOfSky[2] < 255) {
-              fill(randomColor1, randomColor2, randomColor3);
+              fill(randomColor1Buildings, randomColor2Buildings, randomColor3Buildings);
             } else {
               fill(colorsForBuildings[0], colorsForBuildings[1], colorsForBuildings[2]);
             }
@@ -273,19 +289,21 @@
                  arrayOfRandomNumbers[j][2]
             );
           }
-          
-          //Painted ladies
-          fill(225, 204, 127);
-          var moveToX = -10;
-          var moveToY = -60;
-            
-          var newHouse = function (number) {
+        }
 
-            for (var i = 0; i < number; i++) {            
+        //Painted Ladies
+        let paintedLadies = function () {
+          fill(225, 204, 127);
+          let moveToX = -10;
+          let moveToY = -60;
+            
+          let newHouse = function (number) {
+
+            for (let i = 0; i < number; i++) {            
               if (colorOfSky[2] < 255) {            
-                fill(colorsForPaitedLadiesNight[i][0], colorsForPaitedLadiesNight[i][1], colorsForPaitedLadiesNight[i][2]);
+                fill(colorsForPaintedLadiesNight[i][0], colorsForPaintedLadiesNight[i][1], colorsForPaintedLadiesNight[i][2]);
               } else {
-                fill(colorsForPaitedLadiesDay[i][0], colorsForPaitedLadiesDay[i][1], colorsForPaitedLadiesDay[i][2]);
+                fill(colorsForPaintedLadiesDay[i][0], colorsForPaintedLadiesDay[i][1], colorsForPaintedLadiesDay[i][2]);
               }
 
               rect(10 + moveToX, 450 + moveToY, 120, 180);
@@ -312,7 +330,10 @@
             
           };
           newHouse(6);
-
+        }
+        
+        //Crosswalk, street and grass
+        let crosswalkStreetAndGrass = function () {
           //Crosswalk
           fill(80, 80, 80);
           quad(0, 650, 0, 570, 1000, 495, 650, 800);
@@ -327,61 +348,79 @@
           
           //Lower Green Field
           fill(0, 255, 0);
-          rect(0, 620, 800, 30)
-
-
-          
-          //Characters
-
-          for (var i = 0; i < arrayOfPositionsCharacters.length; i++) {
-            noStroke();
+          rect(0, 620, 800, 30);
+        }
+        
+        //Characters
+          let characters = function () {
+            for (let i = 0; i < arrayOfPositionsCharacters.length; i++) {
+              noStroke();
+              
+              fill(0, 0, 0);
+              ellipse(30 + arrayOfPositionsCharacters[i][0], 643 - arrayOfPositionsCharacters[i][1], 15, 10);
+              
+              fill(255, 60, 0);
+              ellipse(30 + arrayOfPositionsCharacters[i][0], 633 - arrayOfPositionsCharacters[i][1], 30, 20);
+              
+              fill(218, 159, 74);
+              ellipse(30 + arrayOfPositionsCharacters[i][0], 609 - arrayOfPositionsCharacters[i][1], 50, 40);
+              
+              stroke(0, 0, 0);
+              strokeWeight(2)            
+              arc(18  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
+              arc(42  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
+              fill(0, 0, 0);
+              arc(30  + arrayOfPositionsCharacters[i][0], 620 - arrayOfPositionsCharacters[i][1], 12,  10,  0, PI);
+              arc(30  + arrayOfPositionsCharacters[i][0], 605 - arrayOfPositionsCharacters[i][1], 55, -55,  0, PI);
             
-            fill(0, 0, 0);
-            ellipse(30 + arrayOfPositionsCharacters[i][0], 643 - arrayOfPositionsCharacters[i][1], 15, 10);
-            
-            fill(255, 60, 0);
-            ellipse(30 + arrayOfPositionsCharacters[i][0], 633 - arrayOfPositionsCharacters[i][1], 30, 20);
-            
-            fill(218, 159, 74);
-            ellipse(30 + arrayOfPositionsCharacters[i][0], 609 - arrayOfPositionsCharacters[i][1], 50, 40);
-            
-            fill(0, 0, 0);
-            arc(18  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
-            arc(42  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
-            arc(30  + arrayOfPositionsCharacters[i][0], 620 - arrayOfPositionsCharacters[i][1], 12,  10,  0, PI);
-            arc(30  + arrayOfPositionsCharacters[i][0], 605 - arrayOfPositionsCharacters[i][1], 55, -55,  0, PI);
-          
-            
-            if (i % 2 === 0) {
-              if (arrayOfPositionsCharacters[i][0] > 1000) {
-                arrayOfPositionsCharacters[i][0] = -200;
+              
+              if (i % 2 === 0) {
+                if (arrayOfPositionsCharacters[i][0] > 1000) {
+                  arrayOfPositionsCharacters[i][0] = -200;
+                } else {
+                  arrayOfPositionsCharacters[i][0] += arrayOfPositionsCharacters[i][2];
+                }
               } else {
-                arrayOfPositionsCharacters[i][0] += arrayOfPositionsCharacters[i][2];
-              }
-            } else {
-              if (arrayOfPositionsCharacters[i][0] < -100) {
-                arrayOfPositionsCharacters[i][0] = 1000;
-              } else {
-                arrayOfPositionsCharacters[i][0] -= arrayOfPositionsCharacters[i][2];
+                if (arrayOfPositionsCharacters[i][0] < -100) {
+                  arrayOfPositionsCharacters[i][0] = 1000;
+                } else {
+                  arrayOfPositionsCharacters[i][0] -= arrayOfPositionsCharacters[i][2];
+                }
               }
             }
           }
-
+        
           //UFO
-
-          var mouseXForUFO = mouseX;
-          var mouseYForUFO = mouseY;
-
-          if (mouseYForUFO > 200) {
-            mouseYForUFO = 200;
+          let ufo = function () {
+            let mouseXForUFO = mouseX;
+            let mouseYForUFO = mouseY;
+  
+            if (mouseYForUFO > 280) {
+              mouseYForUFO = 280;0
+              mouseXForUFO = -1000;
+            }
+  
+            fill(38, 25, 25);
+            ellipse(mouseXForUFO, mouseYForUFO, 70, 70);
+            fill(112, 59, 112);
+            ellipse(mouseXForUFO, mouseYForUFO + 15, 150, 50);
+            fill(255, 255, 255);
+            ellipse(mouseXForUFO, mouseYForUFO + 30, 70, 25);
           }
-
-          fill(38, 25, 25);
-          ellipse(mouseXForUFO, mouseYForUFO, 70, 70);
-          fill(112, 59, 112);
-          ellipse(mouseXForUFO, mouseYForUFO + 15, 150, 50);
-          fill(255, 255, 255);
-          ellipse(mouseXForUFO, mouseYForUFO + 30, 70, 25);
+        
+        draw = function () {
+          sky();        
+          sun();
+          moon();
+          stars();
+          pyramid();
+          salesforce();
+          clouds();
+          buildings();
+          paintedLadies();
+          crosswalkStreetAndGrass();          
+          characters();  
+          ufo();
         }
       }
     };
