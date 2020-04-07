@@ -18,8 +18,8 @@
         frameRate(30);
 
         //variables for stars
-        var sizeXStar = 0.0005;
-        var sizeYStar = 0.0005;
+        var sizeXStar = 0.0010;
+        var sizeYStar = 0.0010;
         var isMidnight = false;
 
         //Variable for the Sun
@@ -29,6 +29,41 @@
         var moveMoonX = 850;
         var moveMoonY = 200;
         var moonPhase = 1;
+
+        //Variables for Characters
+        var positionXCharacter = 740;
+        var positionYCharacter = 45;
+
+        //Array with random positions for characters
+        var arrayOfPositionsCharacters = [];
+        for (var i = 0; i < 10; i++) {
+          var randomXForCharacters = random(0, 740);
+          var randomYForCharacters = random(0, 45);
+          var randomSpeedForCharacters = random(1, 10);
+          arrayOfPositionsCharacters.push([randomXForCharacters, randomYForCharacters, randomSpeedForCharacters]);
+        }
+
+        //Objects with colors for painted ladies
+        var colorsForPaitedLadiesNight = {
+          0: [255, 0, 0],
+          1: [255, 133, 0],
+          2: [255, 255, 0],
+          3: [0, 255, 0],
+          4: [0, 0, 255],
+          5: [133, 0, 255]
+        }
+
+        var colorsForPaitedLadiesDay = {
+          0: [227, 221, 153],
+          1: [183, 193, 159],
+          2: [251, 255, 108],
+          3: [108, 201, 231],
+          4: [84, 89, 255],
+          5: [242, 172, 97]
+        }
+
+        //Arrays to define color of buildings
+        var colorsForBuildings = [180, 220, 220]
 
         //Array of arrays of random mumbers to make buildings
         var arrayOfRandomNumbers = []
@@ -41,9 +76,9 @@
 
         //Array with position of random stars
         var arrayOfStars = [];
-        for (var i = 0; i < 40; i++) {
+        for (var i = 0; i < 50; i++) {
           var randomXStars = random(0, 800);
-          var randomYStars = random(0, 300);
+          var randomYStars = random(0, 400);
           arrayOfStars.push([randomXStars, randomYStars]); 
         }
                 
@@ -60,8 +95,26 @@
 
         draw = function () {
           
-          //Sky
+          //Sky          
           background(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
+          if (sunMovement < -400 && colorOfSky[2] > 0) {
+            if (colorOfSky[1] > 0) {
+              colorOfSky[1] -= 5;
+            } else {
+              colorOfSky[1] = 0;
+              if (colorOfSky[2] <= 40) {
+                colorOfSky[2] = 40;
+              } else {
+                colorOfSky[2] -= 5;
+              }
+            }
+          } else if (sunMovement > -200 && colorOfSky[1] < 228) {
+            if (colorOfSky[2] < 255) {
+              colorOfSky[2] += 4;
+            } else {
+              colorOfSky[1] += 4;
+            }
+          }
 
           //Sun
           fill(255, 255, 0);
@@ -117,35 +170,54 @@
               ellipse(arrayOfStars[i][0], arrayOfStars[i][1], sizeXStar, sizeYStar);
               
               if (isMidnight) {
-                sizeXStar -= 0.0005;
-                sizeYStar -= 0.0005;
+                sizeXStar -= 0.0010;
+                sizeYStar -= 0.0010;
               } else {
-                sizeXStar += 0.0005;
-                sizeYStar += 0.0005;
+                sizeXStar += 0.0010;
+                sizeYStar += 0.0010;
               }
               
-              if (sizeXStar > 1.8 && sizeYStar > 1.8) {
+              if (sizeXStar > 4) {
                 sizeXStar -= 0.0010;
                 sizeYStar -= 0.0010;
                 isMidnight = true;
               } 
 
               if (colorOfSky[2] > 250) {
+                sizeXStar = 0.0010;
+                sizeYStar = 0.0010;
                 isMidnight = false;
-                sizeXStar = 0.0005;
-                sizeYStar = 0.0005;
               }
             } 
           }
 
           //Transamerica Pyramid Building
+
           stroke(0, 0, 0);
-          fill(200, 220, 220);
+          var randomColor1 = random(0, 255);
+          var randomColor2 = random(0, 255);
+          var randomColor3 = random(0, 255);
+
+          if (colorOfSky[2] < 255) {
+            fill(randomColor1, randomColor2, randomColor3);
+          } else {
+            fill(colorsForBuildings[0], colorsForBuildings[1], colorsForBuildings[2]);
+          }
+
           triangle(100, 450, 150, 150, 200, 450);
           rect(140, 225, 20, 100);
 
           //Salesforce building
-          fill(160, 220, 220);
+          var randomColor1 = random(0, 255);
+          var randomColor2 = random(0, 255);
+          var randomColor3 = random(0, 255);
+
+          if (colorOfSky[2] < 255) {
+            fill(randomColor1, randomColor2, randomColor3);
+          } else {
+            fill(colorsForBuildings[0], colorsForBuildings[1], colorsForBuildings[2]);
+          }
+
           ellipse(520, 270, 50, 370);
 
           strokeWeight(3);
@@ -180,9 +252,20 @@
           }
     
           //Buildings of the city
-          stroke(0, 0, 0);          
-          fill(180, 220, 220);          
+          stroke(0, 0, 0);
+
           for (var j = 0; j < arrayOfRandomNumbers.length; j++) {
+          
+            var randomColor1 = random(0, 255);
+            var randomColor2 = random(0, 255);
+            var randomColor3 = random(0, 255);
+
+            if (colorOfSky[2] < 255) {
+              fill(randomColor1, randomColor2, randomColor3);
+            } else {
+              fill(colorsForBuildings[0], colorsForBuildings[1], colorsForBuildings[2]);
+            }
+
             rect(arrayOfRandomNumbers[j][0],
                                         400,
                  arrayOfRandomNumbers[j][1],
@@ -196,8 +279,14 @@
           var moveToY = -60;
             
           var newHouse = function (number) {
-            for (var i = 0; i < number; i++) {
-              fill(225, 204, 127);
+
+            for (var i = 0; i < number; i++) {            
+              if (colorOfSky[2] < 255) {            
+                fill(colorsForPaitedLadiesNight[i][0], colorsForPaitedLadiesNight[i][1], colorsForPaitedLadiesNight[i][2]);
+              } else {
+                fill(colorsForPaitedLadiesDay[i][0], colorsForPaitedLadiesDay[i][1], colorsForPaitedLadiesDay[i][2]);
+              }
+
               rect(10 + moveToX, 450 + moveToY, 120, 180);
               triangle(5  + moveToX, 450 + moveToY,
                       70  + moveToX, 385 + moveToY,
@@ -239,27 +328,56 @@
           fill(0, 255, 0);
           rect(0, 620, 800, 30)
 
-          //Altering the sky
-          if (sunMovement < -400 && colorOfSky[2] > 0) {
-            if (colorOfSky[1] > 0) {
-              colorOfSky[1] -= 5;
-            } else {
-              colorOfSky[1] = 0;
-              if (colorOfSky[2] <= 40) {
-                colorOfSky[2] = 40;
+
+          
+          //Characters
+
+          for (var i = 0; i < arrayOfPositionsCharacters.length; i++) {
+            noStroke();
+            
+            fill(0, 0, 0);
+            ellipse(30 + arrayOfPositionsCharacters[i][0], 643 - arrayOfPositionsCharacters[i][1], 15, 10);
+            
+            fill(255, 60, 0);
+            ellipse(30 + arrayOfPositionsCharacters[i][0], 633 - arrayOfPositionsCharacters[i][1], 30, 20);
+            
+            fill(218, 159, 74);
+            ellipse(30 + arrayOfPositionsCharacters[i][0], 609 - arrayOfPositionsCharacters[i][1], 50, 40);
+            
+            fill(0, 0, 0);
+            arc(18  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
+            arc(42  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
+            arc(30  + arrayOfPositionsCharacters[i][0], 620 - arrayOfPositionsCharacters[i][1], 12,  10,  0, PI);
+            arc(30  + arrayOfPositionsCharacters[i][0], 605 - arrayOfPositionsCharacters[i][1], 55, -55,  0, PI);
+          
+            
+            if (i % 2 === 0) {
+              if (arrayOfPositionsCharacters[i][0] > 1000) {
+                arrayOfPositionsCharacters[i][0] = -200;
               } else {
-                colorOfSky[2] -= 5;
+                arrayOfPositionsCharacters[i][0] += arrayOfPositionsCharacters[i][2];
+              }
+            } else {
+              if (arrayOfPositionsCharacters[i][0] < -100) {
+                arrayOfPositionsCharacters[i][0] = 1000;
+              } else {
+                arrayOfPositionsCharacters[i][0] -= arrayOfPositionsCharacters[i][2];
               }
             }
-          } else if (sunMovement > -200 && colorOfSky[1] < 228) {
-            if (colorOfSky[2] < 255) {
-              colorOfSky[2] += 4;
-            } else {
-              colorOfSky[1] += 4;
-            }
           }
+
+          //UFO
+
+          fill(38, 25, 25);
+          ellipse(500, 85, 120, 120);
+          fill(112, 59, 112);
+          ellipse(500, 100, 250, 80);
+          fill(255, 255, 255);
+          ellipse(500, 120, 100, 50);
+
         }
-    }};
+      }
+    };
 
     var canvas = document.getElementById("mycanvas"); 
     var processingInstance = new Processing(canvas, sketchProc); 
