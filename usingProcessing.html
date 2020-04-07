@@ -232,6 +232,7 @@
           fill(255, 255, 255);
 
           for (var key in objectOfCloudsInformation) {
+
             ellipse(objectOfCloudsInformation[key][2]     , objectOfCloudsInformation[key][0], 126, 97);
             ellipse(objectOfCloudsInformation[key][2] + 62, objectOfCloudsInformation[key][0], 70 , 60);
             ellipse(objectOfCloudsInformation[key][2] - 62, objectOfCloudsInformation[key][0], 70 , 60);
@@ -368,13 +369,19 @@
 
           //UFO
 
-          fill(38, 25, 25);
-          ellipse(500, 85, 120, 120);
-          fill(112, 59, 112);
-          ellipse(500, 100, 250, 80);
-          fill(255, 255, 255);
-          ellipse(500, 120, 100, 50);
+          var mouseXForUFO = mouseX;
+          var mouseYForUFO = mouseY;
 
+          if (mouseYForUFO > 200) {
+            mouseYForUFO = 200;
+          }
+
+          fill(38, 25, 25);
+          ellipse(mouseXForUFO, mouseYForUFO, 70, 70);
+          fill(112, 59, 112);
+          ellipse(mouseXForUFO, mouseYForUFO + 15, 150, 50);
+          fill(255, 255, 255);
+          ellipse(mouseXForUFO, mouseYForUFO + 30, 70, 25);
         }
       }
     };
