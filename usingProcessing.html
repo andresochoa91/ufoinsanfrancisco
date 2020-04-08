@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html> 
  <head>
-    <title>Processing.JS inside Webpages: Template</title> 
+    <title>Project Johan Andres Ochoa</title> 
 </head>
  <body>
     <p align="center"> 
@@ -14,6 +14,12 @@
  <script>
     var sketchProc = function(processingInstance) {
      with (processingInstance) {
+        //THE FOLLOWING CODE IS BY JOHAN ANDRES OCHOA
+        //jandresochoa91@gmail.com
+        //github
+        //
+        //
+
         size(800, 650); 
         frameRate(30);
 
@@ -52,7 +58,7 @@
         let colorsForBuildings = [180, 220, 220];
         
         //Array of arrays of random mumbers to make buildings
-        let arrayOfRandomNumbers = [];
+        let arrayOfRandomNumbers = [];      //better changing for array of building attribures
         for (let i = 0; i < 60; i++) {
           let randomX = random(-40, 800);
           let randomWeigth = random(30, 50);
@@ -68,7 +74,7 @@
           arrayOfStars.push([randomXStars, randomYStars]); 
         }
         
-        //OBJECTS
+
         //Objects with colors for painted ladies
         let colorsForPaintedLadiesNight = {
           0: [255, 0, 0],
@@ -89,14 +95,14 @@
         };
         
         //Object of clouds information
-        let objectOfCloudsInformation = {};
+        let objectOfCloudsInformation = {};  //Array instead
         for (let i = 1; i < 7; i++) {
           let randomXForClouds = random(0, 800);
           let randomSpeedForClouds = random(1, 5);
           objectOfCloudsInformation[i] = [((50 * i) - 50), randomSpeedForClouds, randomXForClouds];          
         }
 
-        //FUNCTIONS
+        //DRAW FUNCTIONS
         //Sky
         let sky = function () {
           background(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
@@ -106,12 +112,12 @@
             } else {
               colorOfSky[1] = 0;
               if (colorOfSky[2] <= 40) {
-                colorOfSky[2] = 40;
+                colorOfSky[2] = 40;    //Defined 40 because I didn't want the sky to be totally black
               } else {
                 colorOfSky[2] -= 5;
               }
             }
-          } else if (sunMovement > -200 && colorOfSky[1] < 228) {
+          } else if (sunMovement > -200 && colorOfSky[1] < 228) {  //When the sun.....
             if (colorOfSky[2] < 255) {
               colorOfSky[2] += 4;
             } else {
@@ -134,7 +140,7 @@
           ellipse(153, sunMovement, 10, 10);
           sunMovement -= 5;
           
-          if (colorOfSky[2] <= 60 && sunMovement === -1300) {
+          if (colorOfSky[2] <= 60 && sunMovement === -1300) { //Separate in different functions
             sunMovement = 750;
           }
         };
@@ -244,10 +250,10 @@
           fill(255, 255, 255);
 
           for (let key in objectOfCloudsInformation) {
-
-            ellipse(objectOfCloudsInformation[key][2]     , objectOfCloudsInformation[key][0], 126, 97);
-            ellipse(objectOfCloudsInformation[key][2] + 62, objectOfCloudsInformation[key][0], 70 , 60);
-            ellipse(objectOfCloudsInformation[key][2] - 62, objectOfCloudsInformation[key][0], 70 , 60);
+            let xCloud = objectOfCloudsInformation[key][0];
+            ellipse(objectOfCloudsInformation[key][2]     , xCloud, 126, 97);
+            ellipse(objectOfCloudsInformation[key][2] + 62, xCloud, 70 , 60);
+            ellipse(objectOfCloudsInformation[key][2] - 62, xCloud, 70 , 60);
             
             if (key % 2 === 0) {
               if (objectOfCloudsInformation[key][2] > 1000) {
@@ -406,8 +412,8 @@
           ellipse(mouseXForUFO, mouseYForUFO + (sizeOfUFO * 30),  70 * sizeOfUFO, 25 * sizeOfUFO);
         };
 
-        //Ligth of abduction
-        let ligthOfAbduction = function () {
+        //Light of abduction
+        let ligthOfAbduction = function () {  //Change light
           mousePressed = function () {
             let mouseXForAbductionLight = mouseX;
             let mouseYForAbductionLight = mouseY;
@@ -435,18 +441,27 @@
             }
           };
         };
-        
+
         //Score
+        let goal = 10;
         let score = function () {
           rect(300, 0, 170, 50);
           fill(0, 0, 0);
           textSize(20);
-          text("Goal: 30 people", 305, 20);
-          text("Current:" + currentScore + " people", 305, 40);
+          text("Goal: " + goal + " people", 305, 20);
+          text("Current: " + currentScore + " people", 305, 40);
         };
+        
+        //Congratulations
+        let congratulations = function () {
+          background(255, 255, 255);
+          fill(0, 0, 0);
+          textSize(90)
+          text("Congratulations!", 75, 200);
+        }
 
         draw = function () {
-          if (currentScore < 2) {
+          if (currentScore < goal) {
             sky();        
             sun();
             moon();
@@ -462,14 +477,13 @@
             ligthOfAbduction();
             score();
           } else {
-            background(255, 255, 255);
-            fill(0, 0, 0);
-            textSize(80)
-            text("Congratulations", 100, 200);
+            congratulations();
           }
         }      
       }
     };
+
+
 
     var canvas = document.getElementById("mycanvas"); 
     var processingInstance = new Processing(canvas, sketchProc); 
