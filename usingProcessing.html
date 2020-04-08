@@ -30,19 +30,18 @@
         let moveMoonX = 850;
         let moveMoonY = 200;
         let moonPhase = 1;
-
-        //Variables for Characters
-        let positionXCharacter = 740;
-        let positionYCharacter = 45;
         
         //Variable Color of sky
         let colorOfSky = [0, 228, 255];
+
+        //Current Score
+        let currentScore = 0;
         
         
         //ARRAYS
         //Array with random positions for characters
         let arrayOfPositionsCharacters = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 5; i++) {
           let randomXForCharacters = random(0, 740);
           let randomYForCharacters = random(0, 45);
           let randomSpeedForCharacters = random(1, 10);
@@ -50,10 +49,10 @@
         }
  
         //Arrays to define color of buildings
-        let colorsForBuildings = [180, 220, 220]
+        let colorsForBuildings = [180, 220, 220];
         
         //Array of arrays of random mumbers to make buildings
-        let arrayOfRandomNumbers = []
+        let arrayOfRandomNumbers = [];
         for (let i = 0; i < 60; i++) {
           let randomX = random(-40, 800);
           let randomWeigth = random(30, 50);
@@ -68,7 +67,6 @@
           let randomYStars = random(0, 400);
           arrayOfStars.push([randomXStars, randomYStars]); 
         }
-
         
         //OBJECTS
         //Objects with colors for painted ladies
@@ -79,7 +77,7 @@
           3: [0, 255, 0],
           4: [0, 0, 255],
           5: [133, 0, 255]
-        }
+        };
 
         let colorsForPaintedLadiesDay = {
           0: [227, 221, 153],
@@ -88,7 +86,7 @@
           3: [108, 201, 231],
           4: [84, 89, 255],
           5: [242, 172, 97]
-        }
+        };
         
         //Object of clouds information
         let objectOfCloudsInformation = {};
@@ -120,7 +118,7 @@
               colorOfSky[1] += 4;
             }
           }
-        }  
+        };  
 
         //Sun
         let sun = function () {
@@ -139,7 +137,7 @@
           if (colorOfSky[2] <= 60 && sunMovement === -1300) {
             sunMovement = 750;
           }
-        }
+        };
 
         //Moon
         let moon = function () {
@@ -166,7 +164,7 @@
           if (colorOfSky[2] === 161) {
             moonPhase += 1;
           }
-        }
+        };
 
         //Stars
         let stars = function () {
@@ -199,7 +197,7 @@
               }
             } 
           }
-        }
+        };
 
         //Transamerica Pyramid
         let pyramid = function () {
@@ -215,8 +213,8 @@
           }
 
           triangle(100, 450, 150, 150, 200, 450);
-          rect(140, 225, 20, 100);
-        }
+          rect(140, 225, 20, 70);
+        };
 
         //Salesforse Building
         let salesforce = function () {
@@ -238,7 +236,7 @@
           noStroke();
           fill(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
           rect(500, 79, 40, 40);
-        }
+        };
 
         //Clouds
         let clouds = function () {
@@ -265,7 +263,7 @@
               }
             }
           }
-        }
+        };
         
         //Buildings of the city
         let buildings = function () {
@@ -289,7 +287,7 @@
                  arrayOfRandomNumbers[j][2]
             );
           }
-        }
+        };
 
         //Painted Ladies
         let paintedLadies = function () {
@@ -326,11 +324,10 @@
 
               moveToX += 130;
               moveToY -= 10;
-            } 
-            
+            }             
           };
           newHouse(6);
-        }
+        };
         
         //Crosswalk, street and grass
         let crosswalkStreetAndGrass = function () {
@@ -349,84 +346,128 @@
           //Lower Green Field
           fill(0, 255, 0);
           rect(0, 620, 800, 30);
-        }
+        };
         
         //Characters
-          let characters = function () {
-            for (let i = 0; i < arrayOfPositionsCharacters.length; i++) {
-              noStroke();
-              
-              fill(0, 0, 0);
-              ellipse(30 + arrayOfPositionsCharacters[i][0], 643 - arrayOfPositionsCharacters[i][1], 15, 10);
-              
-              fill(255, 60, 0);
-              ellipse(30 + arrayOfPositionsCharacters[i][0], 633 - arrayOfPositionsCharacters[i][1], 30, 20);
-              
-              fill(218, 159, 74);
-              ellipse(30 + arrayOfPositionsCharacters[i][0], 609 - arrayOfPositionsCharacters[i][1], 50, 40);
-              
-              stroke(0, 0, 0);
-              strokeWeight(2)            
-              arc(18  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
-              arc(42  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
-              fill(0, 0, 0);
-              arc(30  + arrayOfPositionsCharacters[i][0], 620 - arrayOfPositionsCharacters[i][1], 12,  10,  0, PI);
-              arc(30  + arrayOfPositionsCharacters[i][0], 605 - arrayOfPositionsCharacters[i][1], 55, -55,  0, PI);
+        let characters = function () {
+          for (let i = 0; i < arrayOfPositionsCharacters.length; i++) {
+            noStroke();
             
-              
-              if (i % 2 === 0) {
-                if (arrayOfPositionsCharacters[i][0] > 1000) {
-                  arrayOfPositionsCharacters[i][0] = -200;
-                } else {
-                  arrayOfPositionsCharacters[i][0] += arrayOfPositionsCharacters[i][2];
-                }
+            fill(0, 0, 0);
+            ellipse(arrayOfPositionsCharacters[i][0], 643 - arrayOfPositionsCharacters[i][1], 15, 10);
+            
+            fill(255, 60, 0);
+            ellipse(arrayOfPositionsCharacters[i][0], 633 - arrayOfPositionsCharacters[i][1], 30, 20);
+            
+            fill(218, 159, 74);
+            ellipse(arrayOfPositionsCharacters[i][0], 609 - arrayOfPositionsCharacters[i][1], 50, 40);
+            
+            stroke(0, 0, 0);
+            strokeWeight(2)            
+            arc(-12  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
+            arc(12  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
+            fill(0, 0, 0);
+            arc(arrayOfPositionsCharacters[i][0], 620 - arrayOfPositionsCharacters[i][1], 12,  10,  0, PI);
+            arc(arrayOfPositionsCharacters[i][0], 605 - arrayOfPositionsCharacters[i][1], 55, -55,  0, PI);
+          
+            
+            if (i % 2 === 0) {
+              if (arrayOfPositionsCharacters[i][0] > 1000) {
+                arrayOfPositionsCharacters[i][0] = -200;
               } else {
-                if (arrayOfPositionsCharacters[i][0] < -100) {
-                  arrayOfPositionsCharacters[i][0] = 1000;
-                } else {
-                  arrayOfPositionsCharacters[i][0] -= arrayOfPositionsCharacters[i][2];
-                }
+                arrayOfPositionsCharacters[i][0] += arrayOfPositionsCharacters[i][2];
+              }
+            } else {
+              if (arrayOfPositionsCharacters[i][0] < -100) {
+                arrayOfPositionsCharacters[i][0] = 1000;
+              } else {
+                arrayOfPositionsCharacters[i][0] -= arrayOfPositionsCharacters[i][2];
               }
             }
           }
+        };
         
+        //UFO
+        let ufo = function () {
+          let mouseXForUFO = mouseX;
+          let mouseYForUFO = mouseY;
+          let sizeOfUFO = mouseYForUFO * 0.006;
 
-
-          //UFO
-          let ufo = function () {
-            let mouseXForUFO = mouseX;
-            let mouseYForUFO = mouseY;
-            var sizeOfUFO = mouseYForUFO * 0.006;
-  
-            if (mouseYForUFO > 230) {
-              mouseYForUFO = 230;
-              sizeOfUFO = 1.4;
-            }
-  
-            fill(38, 25, 25);
-            ellipse(mouseXForUFO, mouseYForUFO + (sizeOfUFO * 1) ,  70 * sizeOfUFO, 70 * sizeOfUFO);
-
-            fill(112, 59, 112);
-            ellipse(mouseXForUFO, mouseYForUFO + (sizeOfUFO * 15), 150 * sizeOfUFO, 50 * sizeOfUFO);
-
-            fill(255, 255, 255);
-            ellipse(mouseXForUFO, mouseYForUFO + (sizeOfUFO * 30),  70 * sizeOfUFO, 25 * sizeOfUFO);
+          if (mouseYForUFO > 220) {
+            mouseYForUFO = 220;
+            sizeOfUFO = 1.3;
           }
+          fill(38, 25, 25);
+          ellipse(mouseXForUFO, mouseYForUFO + (sizeOfUFO * 1) ,  70 * sizeOfUFO, 70 * sizeOfUFO);
+          fill(112, 59, 112);
+          ellipse(mouseXForUFO, mouseYForUFO + (sizeOfUFO * 15), 150 * sizeOfUFO, 50 * sizeOfUFO);
+          noStroke()
+          fill(255, 255, 255);
+          ellipse(mouseXForUFO, mouseYForUFO + (sizeOfUFO * 30),  70 * sizeOfUFO, 25 * sizeOfUFO);
+        };
+
+        //Ligth of abduction
+        let ligthOfAbduction = function () {
+          mousePressed = function () {
+            let mouseXForAbductionLight = mouseX;
+            let mouseYForAbductionLight = mouseY;
+            let sizeOfLigth = mouseYForAbductionLight * 0.006;
+            let isThereLight = false;
+            if (mouseYForAbductionLight > 210) {
+              mouseYForAbductionLight = 220;
+              sizeOfLigth = 1.3;
+            }
+            if (mouseY < 270) {
+              noStroke();
+              fill(255, 255, 255);
+              rect(mouseXForAbductionLight - (70 * sizeOfLigth / 2), mouseYForAbductionLight + (65 * sizeOfLigth / 2), 70 * sizeOfLigth, 800);
+              isThereLight = true;
+            }
+            for (let i = 0; i < arrayOfPositionsCharacters.length; i++) {
+              if (arrayOfPositionsCharacters[i][0] > mouseX - 49 && arrayOfPositionsCharacters[i][0] < mouseX + 49 && isThereLight) {
+                if (i % 0 === 0) {
+                  arrayOfPositionsCharacters[i][0] = 1001;
+                } else {
+                  arrayOfPositionsCharacters[i][0] = -101;
+                }
+                currentScore++;
+              } 
+            }
+          };
+        };
         
+        //Score
+        let score = function () {
+          rect(300, 0, 170, 50);
+          fill(0, 0, 0);
+          textSize(20);
+          text("Goal: 30 people", 305, 20);
+          text("Current:" + currentScore + " people", 305, 40);
+        };
+
         draw = function () {
-          sky();        
-          sun();
-          moon();
-          stars();
-          pyramid();
-          salesforce();
-          clouds();
-          buildings();
-          paintedLadies();
-          crosswalkStreetAndGrass();          
-          characters();  
-          ufo();
-        }
+          if (currentScore < 2) {
+            sky();        
+            sun();
+            moon();
+            stars();
+            pyramid();
+            salesforce();
+            clouds();
+            buildings();
+            paintedLadies();
+            crosswalkStreetAndGrass();          
+            characters();  
+            ufo();
+            ligthOfAbduction();
+            score();
+          } else {
+            background(255, 255, 255);
+            fill(0, 0, 0);
+            textSize(80)
+            text("Congratulations", 100, 200);
+          }
+        }      
       }
     };
 
