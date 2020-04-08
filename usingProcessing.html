@@ -14,7 +14,7 @@
  <script>
     var sketchProc = function(processingInstance) {
      with (processingInstance) {
-        //THE FOLLOWING CODE IS BY JOHAN ANDRES OCHOA
+        //THE FOLLOWING CODE IS WRITEN BY JOHAN ANDRES OCHOA
         //jandresochoa91@gmail.com
         //github
         //
@@ -47,11 +47,17 @@
         //ARRAYS
         //Array with random positions for characters
         let arrayOfPositionsCharacters = [];
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 4; i++) {
           let randomXForCharacters = random(0, 740);
           let randomYForCharacters = random(0, 45);
-          let randomSpeedForCharacters = random(1, 10);
-          arrayOfPositionsCharacters.push([randomXForCharacters, randomYForCharacters, randomSpeedForCharacters]);
+          let randomSpeedForCharacters = random(1, 30);
+          let randomNewPosition = random(0, 800);
+          arrayOfPositionsCharacters.push([randomXForCharacters,
+                                           randomYForCharacters,
+                                           randomSpeedForCharacters,
+                                           randomNewPosition,
+                                           true]  
+          );
         }
  
         //Arrays to define color of buildings
@@ -353,7 +359,7 @@
           fill(0, 255, 0);
           rect(0, 620, 800, 30);
         };
-        
+
         //Characters
         let characters = function () {
           for (let i = 0; i < arrayOfPositionsCharacters.length; i++) {
@@ -375,19 +381,23 @@
             fill(0, 0, 0);
             arc(arrayOfPositionsCharacters[i][0], 620 - arrayOfPositionsCharacters[i][1], 12,  10,  0, PI);
             arc(arrayOfPositionsCharacters[i][0], 605 - arrayOfPositionsCharacters[i][1], 55, -55,  0, PI);
-          
+
             
-            if (i % 2 === 0) {
-              if (arrayOfPositionsCharacters[i][0] > 1000) {
-                arrayOfPositionsCharacters[i][0] = -200;
-              } else {
-                arrayOfPositionsCharacters[i][0] += arrayOfPositionsCharacters[i][2];
-              }
+            if (arrayOfPositionsCharacters[i][3] > arrayOfPositionsCharacters[i][0] && arrayOfPositionsCharacters[i][4]) {
+              arrayOfPositionsCharacters[i][0] += arrayOfPositionsCharacters[i][2];
             } else {
-              if (arrayOfPositionsCharacters[i][0] < -100) {
-                arrayOfPositionsCharacters[i][0] = 1000;
-              } else {
-                arrayOfPositionsCharacters[i][0] -= arrayOfPositionsCharacters[i][2];
+              if (arrayOfPositionsCharacters[i][4]) {
+                arrayOfPositionsCharacters[i][4] = false;
+                arrayOfPositionsCharacters[i][3] = random(-200, 1000);
+              }
+            }
+
+            if (arrayOfPositionsCharacters[i][3] <= arrayOfPositionsCharacters[i][0] && !arrayOfPositionsCharacters[i][4]) {
+              arrayOfPositionsCharacters[i][0] -= arrayOfPositionsCharacters[i][2];
+            } else {
+              if (!arrayOfPositionsCharacters[i][4]) {
+                arrayOfPositionsCharacters[i][4] = true;
+                arrayOfPositionsCharacters[i][3] = random(-400, 1200);
               }
             }
           }
@@ -431,11 +441,7 @@
             }
             for (let i = 0; i < arrayOfPositionsCharacters.length; i++) {
               if (arrayOfPositionsCharacters[i][0] > mouseX - 49 && arrayOfPositionsCharacters[i][0] < mouseX + 49 && isThereLight) {
-                if (i % 0 === 0) {
-                  arrayOfPositionsCharacters[i][0] = 1001;
-                } else {
-                  arrayOfPositionsCharacters[i][0] = -101;
-                }
+                arrayOfPositionsCharacters[i][0] = random(-400, 1200);
                 currentScore++;
               } 
             }
@@ -443,7 +449,7 @@
         };
 
         //Score
-        let goal = 10;
+        let goal = 40;
         let score = function () {
           rect(300, 0, 170, 50);
           fill(0, 0, 0);
@@ -482,8 +488,6 @@
         }      
       }
     };
-
-
 
     var canvas = document.getElementById("mycanvas"); 
     var processingInstance = new Processing(canvas, sketchProc); 
