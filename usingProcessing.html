@@ -16,100 +16,20 @@
      with (processingInstance) {
         //THE FOLLOWING CODE IS WRITEN BY JOHAN ANDRES OCHOA
         //jandresochoa91@gmail.com
-        //github
-        //
-        //
+       
+        //WHEN I USE X AND Y, I USUALLY REFFER TO X AXIS AND Y AXIS. 
+        //Example: sizeXStar, randomXForCharacters, randomXForClouds, etc
+
+        //I'VE USED *** IN COMMENTS TO REFFER FUNCTIONS IN THE DRAW FUNCTION (MAIN)
 
         size(800, 650); 
         frameRate(300);
 
-        //VARIABLES
-        //variables for stars
-        let sizeXStar = 0.0010;
-        let sizeYStar = 0.0010;
-        let isMidnight = false;
 
-        //Variable for the Sun
-        let sunMovement = 380;
-
-        //Variables for the moon
-        let moveMoonX = 850;
-        let moveMoonY = 200;
-        let moonPhase = 1;
-        
-        //Variable Color of sky
+        //SKY
         let colorOfSky = [0, 228, 255];
 
-        //Current Score
-        let currentScore = 0;
-        
-        
-        //ARRAYS
-        //Array with random positions for characters
-        let arrayOfPositionsCharacters = [];
-        for (let i = 0; i < 4; i++) {
-          let randomXForCharacters = random(0, 740);
-          let randomYForCharacters = random(0, 45);
-          let randomSpeedForCharacters = random(1, 30);
-          let randomNewPosition = random(0, 800);
-          arrayOfPositionsCharacters.push([randomXForCharacters,
-                                           randomYForCharacters,
-                                           randomSpeedForCharacters,
-                                           randomNewPosition,
-                                           true]  
-          );
-        }
- 
-        //Arrays to define color of buildings
-        let colorsForBuildings = [180, 220, 220];
-        
-        //Array of arrays of random mumbers to make buildings
-        let arrayOfRandomNumbers = [];      //better changing for array of building attribures
-        for (let i = 0; i < 60; i++) {
-          let randomX = random(-40, 800);
-          let randomWeigth = random(30, 50);
-          let randomHeight = random(-200, -100);
-          arrayOfRandomNumbers.push([randomX, randomWeigth, randomHeight]);
-        }
-        
-        //Array with position of random stars
-        let arrayOfStars = [];
-        for (let i = 0; i < 50; i++) {
-          let randomXStars = random(0, 800);
-          let randomYStars = random(0, 400);
-          arrayOfStars.push([randomXStars, randomYStars]); 
-        }
-        
-
-        //Objects with colors for painted ladies
-        let colorsForPaintedLadiesNight = {
-          1: [255, 0, 0],
-          2: [255, 133, 0],
-          3: [255, 255, 0],
-          4: [0, 255, 0],
-          5: [0, 0, 255],
-          6: [133, 0, 255]
-        };
-
-        let colorsForPaintedLadiesDay = {
-          1: [227, 221, 153],
-          2: [183, 193, 159],
-          3: [251, 255, 108],
-          4: [108, 201, 231],
-          5: [84, 89, 255],
-          6: [242, 172, 97]
-        };
-        
-        //Object of clouds information
-        let objectOfCloudsInformation = {};  //Array instead
-        for (let i = 1; i < 7; i++) {
-          let randomXForClouds = random(0, 800);
-          let randomSpeedForClouds = random(1, 5);
-          objectOfCloudsInformation[i] = [((50 * i) - 50), randomSpeedForClouds, randomXForClouds];          
-        }
-
-        //DRAW FUNCTIONS
-        //Sky
+        //***Sky function in Draw function
         let sky = function () {
           background(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
           if (sunMovement < -400 && colorOfSky[2] > 0) {
@@ -132,7 +52,11 @@
           }
         };  
 
-        //Sun
+
+        //SUN
+        let sunMovement = 380;
+        
+        //***Sun function in Draw function
         let sun = function () {
           fill(255, 255, 0);
           noStroke();
@@ -141,9 +65,9 @@
           stroke(0, 0, 0);
           strokeWeight(3);
           arc(200, sunMovement, 150, 100, 0, PI);
-          fill(0, 0, 0);
           ellipse(250, sunMovement, 10, 10);
           ellipse(153, sunMovement, 10, 10);
+          fill(0, 0, 0);
           sunMovement -= 5;
           
           if (colorOfSky[2] <= 60 && sunMovement === -1300) { //Separate in different functions
@@ -151,7 +75,13 @@
           }
         };
 
-        //Moon
+
+        //MOON
+        let moveMoonX = 850;
+        let moveMoonY = 200;
+        let moonPhase = 1;    //There are 3 phases in this code: 1: Waxing Crescent, 2: First Quarter, 3: Full.
+
+        //***Moon function in Draw function
         let moon = function () {
           if (colorOfSky[2] <= 160) {
             noStroke();
@@ -178,15 +108,29 @@
           }
         };
 
-        //Stars
+
+        //STARS
+        let sizeXStar = 0.0010;
+        let sizeYStar = 0.0010;
+        let isMidnight = false;
+
+        //Array with position of random stars
+        let allTheStars = [];
+        for (let i = 0; i < 50; i++) {
+          let randomXStars = random(0, 800);
+          let randomYStars = random(0, 400);
+          allTheStars.push([randomXStars, randomYStars]); 
+        }
+
+        //***Stars function in Draw function
         let stars = function () {
-          for (var i = 0; i < arrayOfStars.length; i++) {
+          for (var i = 0; i < allTheStars.length; i++) {
             
             if (colorOfSky[2] < 255) {
               
               fill(255, 255, 255);
               noStroke();
-              ellipse(arrayOfStars[i][0], arrayOfStars[i][1], sizeXStar, sizeYStar);
+              ellipse(allTheStars[i][0], allTheStars[i][1], sizeXStar, sizeYStar);
               
               if (isMidnight) {
                 sizeXStar -= 0.0010;
@@ -211,33 +155,43 @@
           }
         };
 
-        //Transamerica Pyramid
+
+        //TRANSAMERICA PYRAMID BUILDING
+        //***Pyramid function in Draw function
         let pyramid = function () {
           stroke(0, 0, 0);
-          let randomColor1Pyramid = random(0, 255);
-          let randomColor2Pyramid = random(0, 255);
-          let randomColor3Pyramid = random(0, 255);
+          let randomRPyramidColor = random(0, 255);
+          let randomGPyramidColor = random(0, 255);
+          let randomBPyramidColor = random(0, 255);
 
           if (colorOfSky[2] < 255) {
-            fill(randomColor1Pyramid, randomColor2Pyramid, randomColor3Pyramid);
+            fill(randomRPyramidColor, randomGPyramidColor, randomBPyramidColor);
           } else {
-            fill(colorsForBuildings[0], colorsForBuildings[1], colorsForBuildings[2]);
+            fill(buildingsAttributes[0][3][0],  //I used position 0, but you can use any other position of the array
+                 buildingsAttributes[0][3][1],  //I used position 0, but you can use any other position of the array
+                 buildingsAttributes[0][3][2]   //I used position 0, but you can use any other position of the array
+            );
           }
 
           triangle(100, 450, 150, 150, 200, 450);
           rect(140, 225, 20, 70);
         };
 
-        //Salesforse Building
+
+        //SALESFORCE BUILDING
+        //***Salesforse function in Draw function
         let salesforce = function () {
-          let randomColor1Salesforce = random(0, 255);
-          let randomColor2Salesforce = random(0, 255);
-          let randomColor3Salesforce = random(0, 255);
+          let randomRSalesforceColor = random(0, 255);
+          let randomGSalesforceColor = random(0, 255);
+          let randomBSalesforceColor = random(0, 255);
 
           if (colorOfSky[2] < 255) {
-            fill(randomColor1Salesforce, randomColor2Salesforce, randomColor3Salesforce);
+            fill(randomRSalesforceColor, randomGSalesforceColor, randomBSalesforceColor);
           } else {
-            fill(colorsForBuildings[0], colorsForBuildings[1], colorsForBuildings[2]);
+            fill(buildingsAttributes[1][3][0],  //I used position 1, but you can use any other position of the array
+                 buildingsAttributes[1][3][1],  //I used position 1, but you can use any other position of the array
+                 buildingsAttributes[1][3][2]   //I used position 1, but you can use any other position of the array
+            );
           }
 
           ellipse(520, 270, 50, 370);
@@ -249,99 +203,149 @@
           fill(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
           rect(500, 79, 40, 40);
         };
+        
 
-        //Clouds
+        //CLOUDS
+        //Clouds attributes
+        let cloudsAttributes = []; 
+        for (let i = 1; i < 7; i++) {
+          let randomXForClouds = random(0, 800);
+          let setYForClouds = (50 * i) - 50;
+          let randomSpeedForClouds = random(1, 5);
+
+          cloudsAttributes.push([setYForClouds,  
+                                 randomSpeedForClouds,
+                                 randomXForClouds
+                                ]
+          );          
+        }
+
+        //***Clouds function in Draw function
         let clouds = function () {
           noStroke();
           fill(255, 255, 255);
 
-          for (let key in objectOfCloudsInformation) {
-            let xCloud = objectOfCloudsInformation[key][0];
-            ellipse(objectOfCloudsInformation[key][2]     , xCloud, 126, 97);
-            ellipse(objectOfCloudsInformation[key][2] + 62, xCloud, 70 , 60);
-            ellipse(objectOfCloudsInformation[key][2] - 62, xCloud, 70 , 60);
+          for (let i = 0; i < cloudsAttributes.length; i++) {
+            let xCloud = cloudsAttributes[i][0];
+            ellipse(cloudsAttributes[i][2]     , xCloud, 126, 97);
+            ellipse(cloudsAttributes[i][2] + 62, xCloud, 70 , 60);
+            ellipse(cloudsAttributes[i][2] - 62, xCloud, 70 , 60);
             
-            if (key % 2 === 0) {
-              if (objectOfCloudsInformation[key][2] > 1000) {
-                objectOfCloudsInformation[key][2] = -200;
+            if (i % 2 === 0) {
+              if (cloudsAttributes[i][2] > 1000) {
+                cloudsAttributes[i][2] = -200;
               } else {
-                objectOfCloudsInformation[key][2] += objectOfCloudsInformation[key][1];
+                cloudsAttributes[i][2] += cloudsAttributes[i][1];
               }
             } else {
-              if (objectOfCloudsInformation[key][2] < -100) {
-                objectOfCloudsInformation[key][2] = 1000;
+              if (cloudsAttributes[i][2] < -100) {
+                cloudsAttributes[i][2] = 1000;
               } else {
-                objectOfCloudsInformation[key][2] -= objectOfCloudsInformation[key][1];
+                cloudsAttributes[i][2] -= cloudsAttributes[i][1];
               }
             }
           }
         };
-        
-        //Buildings of the city
+
+
+        //BUILDINGS (NEITHER TRANSAMERICA PYRAMID NOR SALESFORCE INCLUIDED)
+        //Array of random mumbers to make buildings and define colors
+        let buildingsAttributes = [];
+        for (let i = 0; i < 60; i++) {
+          let randomXForBuildings = random(-40, 800);
+          let randomWeigthOfBuildings = random(30, 50);
+          let randomHeightOfBuildings = random(-200, -100);
+          let randomRForBuildingColor = random(140, 180);
+          let randomGForBuildingColor = random(140, 180);
+          let randomBForBuildingColor = random(140, 180);
+          buildingsAttributes.push([randomXForBuildings,
+                                    randomWeigthOfBuildings,
+                                    randomHeightOfBuildings,
+                                    [randomRForBuildingColor, randomGForBuildingColor, randomBForBuildingColor]
+                                   ]
+          );
+        }
+
+        //***Buildings function in Draw function
         let buildings = function () {
           stroke(0, 0, 0);
 
-          for (let j = 0; j < arrayOfRandomNumbers.length; j++) {
+          for (let j = 0; j < buildingsAttributes.length; j++) {
           
-            let randomColor1Buildings = random(0, 255);
-            let randomColor2Buildings = random(0, 255);
-            let randomColor3Buildings = random(0, 255);
+            let randomRBuildingsColor = random(0, 255);
+            let randomGBuildingsColor = random(0, 255);
+            let randomBBuildingsColor = random(0, 255);
 
             if (colorOfSky[2] < 255) {
-              fill(randomColor1Buildings, randomColor2Buildings, randomColor3Buildings);
+              fill(randomRBuildingsColor, randomGBuildingsColor, randomBBuildingsColor);
             } else {
-              fill(colorsForBuildings[0], colorsForBuildings[1], colorsForBuildings[2]);
+              fill(buildingsAttributes[j][3][0], buildingsAttributes[j][3][1], buildingsAttributes[j][3][2]);
             }
 
-            rect(arrayOfRandomNumbers[j][0],
-                                        400,
-                 arrayOfRandomNumbers[j][1],
-                 arrayOfRandomNumbers[j][2]
+            rect(buildingsAttributes[j][0],
+                                       400,
+                 buildingsAttributes[j][1],
+                 buildingsAttributes[j][2]
             );
           }
         };
+ 
 
-        //Painted Ladies
+        //PAINTED LADIES
+        let colorsForPaintedLadiesNightTime = {
+          1: [255, 0, 0],
+          2: [255, 133, 0],
+          3: [255, 255, 0],
+          4: [0, 255, 0],
+          5: [0, 0, 255],
+          6: [133, 0, 255]
+        };
+
+        let colorsForPaintedLadiesDayTime = {
+          1: [255, 100, 100],
+          2: [255, 150, 60],
+          3: [255, 255, 100],
+          4: [100, 255, 100],
+          5: [84, 89, 255],
+          6: [133, 100, 255]
+        };
+
+        //***Painted Ladies function in Draw function
         let paintedLadies = function () {
           fill(225, 204, 127);
-          let moveToX = -10;
-          let moveToY = -60;
+          let movePaintedLadyToX = -10;
+          let movePaintedLadyToY = -60;
             
-          let newHouse = function (number) {
-
-            for (let i = 1; i < number + 1; i++) {            
-              if (colorOfSky[2] < 255) {            
-                fill(colorsForPaintedLadiesNight[i][0], colorsForPaintedLadiesNight[i][1], colorsForPaintedLadiesNight[i][2]);
-              } else {
-                fill(colorsForPaintedLadiesDay[i][0], colorsForPaintedLadiesDay[i][1], colorsForPaintedLadiesDay[i][2]);
-              }
-
-              rect(10 + moveToX, 450 + moveToY, 120, 180);
-              triangle(5  + moveToX, 450 + moveToY,
-                      70  + moveToX, 385 + moveToY,
-                      135 + moveToX, 450 + moveToY
-              );
-
-              quad(130 + moveToX, 450 + moveToY,
-                   130 + moveToX, 630 + moveToY,
-                   265 + moveToX, 610 + moveToY,
-                   265 + moveToX, 440 + moveToY
-              );
-              fill(40, 40, 40);
-              quad(70 + moveToX, 385 + moveToY,
-                  135 + moveToX, 450 + moveToY,
-                  270 + moveToX, 440 + moveToY,
-                  200 + moveToX, 380 + moveToY
-              );
-
-              moveToX += 130;
-              moveToY -= 10;
-            }             
-          };
-          newHouse(6);
+          for (let i = 1; i < 6 + 1; i++) {            
+            if (colorOfSky[2] < 255) {            
+              fill(colorsForPaintedLadiesNightTime[i][0], colorsForPaintedLadiesNightTime[i][1], colorsForPaintedLadiesNightTime[i][2]);
+            } else {
+              fill(colorsForPaintedLadiesDayTime[i][0], colorsForPaintedLadiesDayTime[i][1], colorsForPaintedLadiesDayTime[i][2]);
+            }
+            rect(10 + movePaintedLadyToX, 450 + movePaintedLadyToY, 120, 180);
+            triangle(5  + movePaintedLadyToX, 450 + movePaintedLadyToY,
+                    70  + movePaintedLadyToX, 385 + movePaintedLadyToY,
+                    135 + movePaintedLadyToX, 450 + movePaintedLadyToY
+            );
+            quad(130 + movePaintedLadyToX, 450 + movePaintedLadyToY,
+                 130 + movePaintedLadyToX, 630 + movePaintedLadyToY,
+                 265 + movePaintedLadyToX, 610 + movePaintedLadyToY,
+                 265 + movePaintedLadyToX, 440 + movePaintedLadyToY
+            );
+            fill(40, 40, 40);
+            quad(70 + movePaintedLadyToX, 385 + movePaintedLadyToY,
+                135 + movePaintedLadyToX, 450 + movePaintedLadyToY,
+                270 + movePaintedLadyToX, 440 + movePaintedLadyToY,
+                200 + movePaintedLadyToX, 380 + movePaintedLadyToY
+            );
+            movePaintedLadyToX += 130;
+            movePaintedLadyToY -= 10;
+          }             
         };
+
         
-        //Crosswalk, street and grass
+        //CROSSWALK, STREET AND GRASS
+        //***function in Draw function
         let crosswalkStreetAndGrass = function () {
           //Crosswalk
           fill(80, 80, 80);
@@ -360,50 +364,70 @@
           rect(0, 620, 800, 30);
         };
 
-        //Characters
+
+        //CHARACTERS
+        //Random positions and speed for characters 
+        let positionsAndSpeedOfCharacters = [];
+        for (let i = 0; i < 3; i++) {
+          let randomXForCharacters = random(0, 740);
+          let randomYForCharacters = random(0, 45);
+          let randomSpeedForCharacters = random(1, 30);
+          let randomNewPositionOfCharacters = random(0, 800);
+          positionsAndSpeedOfCharacters.push([randomXForCharacters,   
+                                              randomYForCharacters,
+                                              randomSpeedForCharacters,
+                                              randomNewPositionOfCharacters,
+                                              true     //True or false to know if caracter is turning right or left
+                                             ]
+          );
+        }
+
+        //***Characters function in Draw function
         let characters = function () {
-          for (let i = 0; i < arrayOfPositionsCharacters.length; i++) {
+          for (let i = 0; i < positionsAndSpeedOfCharacters.length; i++) {
             noStroke();
             
             fill(0, 0, 0);
-            ellipse(arrayOfPositionsCharacters[i][0], 643 - arrayOfPositionsCharacters[i][1], 15, 10);
+            ellipse(positionsAndSpeedOfCharacters[i][0], 643 - positionsAndSpeedOfCharacters[i][1], 15, 10);
             
             fill(255, 60, 0);
-            ellipse(arrayOfPositionsCharacters[i][0], 633 - arrayOfPositionsCharacters[i][1], 30, 20);
+            ellipse(positionsAndSpeedOfCharacters[i][0], 633 - positionsAndSpeedOfCharacters[i][1], 30, 20);
             
             fill(218, 159, 74);
-            ellipse(arrayOfPositionsCharacters[i][0], 609 - arrayOfPositionsCharacters[i][1], 50, 40);
+            ellipse(positionsAndSpeedOfCharacters[i][0], 609 - positionsAndSpeedOfCharacters[i][1], 50, 40);
             
             stroke(0, 0, 0);
             strokeWeight(2)            
-            arc(-12  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
-            arc(12  + arrayOfPositionsCharacters[i][0], 613 - arrayOfPositionsCharacters[i][1], 8 ,  10, -3,  0);
+            arc(-12  + positionsAndSpeedOfCharacters[i][0], 613 - positionsAndSpeedOfCharacters[i][1], 8 ,  10, -3,  0);
+            arc(12  + positionsAndSpeedOfCharacters[i][0], 613 - positionsAndSpeedOfCharacters[i][1], 8 ,  10, -3,  0);
             fill(0, 0, 0);
-            arc(arrayOfPositionsCharacters[i][0], 620 - arrayOfPositionsCharacters[i][1], 12,  10,  0, PI);
-            arc(arrayOfPositionsCharacters[i][0], 605 - arrayOfPositionsCharacters[i][1], 55, -55,  0, PI);
+            arc(positionsAndSpeedOfCharacters[i][0], 620 - positionsAndSpeedOfCharacters[i][1], 12,  10,  0, PI);
+            arc(positionsAndSpeedOfCharacters[i][0], 605 - positionsAndSpeedOfCharacters[i][1], 55, -55,  0, PI);
 
             
-            if (arrayOfPositionsCharacters[i][3] > arrayOfPositionsCharacters[i][0] && arrayOfPositionsCharacters[i][4]) {
-              arrayOfPositionsCharacters[i][0] += arrayOfPositionsCharacters[i][2];
+            if (positionsAndSpeedOfCharacters[i][3] > positionsAndSpeedOfCharacters[i][0] && positionsAndSpeedOfCharacters[i][4]) {
+              positionsAndSpeedOfCharacters[i][0] += positionsAndSpeedOfCharacters[i][2];
             } else {
-              if (arrayOfPositionsCharacters[i][4]) {
-                arrayOfPositionsCharacters[i][4] = false;
-                arrayOfPositionsCharacters[i][3] = random(-400, 1200);
+              if (positionsAndSpeedOfCharacters[i][4]) {
+                positionsAndSpeedOfCharacters[i][4] = false;
+                positionsAndSpeedOfCharacters[i][3] = random(-400, 1200);
               }
             }
 
-            if (arrayOfPositionsCharacters[i][3] <= arrayOfPositionsCharacters[i][0] && !arrayOfPositionsCharacters[i][4]) {
-              arrayOfPositionsCharacters[i][0] -= arrayOfPositionsCharacters[i][2];
+            if (positionsAndSpeedOfCharacters[i][3] <= positionsAndSpeedOfCharacters[i][0] && !positionsAndSpeedOfCharacters[i][4]) {
+              positionsAndSpeedOfCharacters[i][0] -= positionsAndSpeedOfCharacters[i][2];
             } else {
-              if (!arrayOfPositionsCharacters[i][4]) {
-                arrayOfPositionsCharacters[i][4] = true;
-                arrayOfPositionsCharacters[i][3] = random(-400, 1200);
+              if (!positionsAndSpeedOfCharacters[i][4]) {
+                positionsAndSpeedOfCharacters[i][4] = true;
+                positionsAndSpeedOfCharacters[i][3] = random(-400, 1200);
               }
             }
           }
         };
         
+
         //UFO
+        //***ufo function in Draw function
         let ufo = function () {
           let mouseXForUFO = mouseX;
           let mouseYForUFO = mouseY;
@@ -422,8 +446,10 @@
           ellipse(mouseXForUFO, mouseYForUFO + (sizeOfUFO * 30),  70 * sizeOfUFO, 25 * sizeOfUFO);
         };
 
-        //Light of abduction
-        let ligthOfAbduction = function () {  //Change light
+
+        //LIGTH OF UFO
+        //***Light of UFO function in Draw function
+        let ligthOfUFO = function () {  //Change light
           mousePressed = function () {
             if (currentScore < goal) {
               let mouseXForAbductionLight = mouseX;
@@ -440,13 +466,13 @@
                 rect(mouseXForAbductionLight - (70 * sizeOfLigth / 2), mouseYForAbductionLight + (65 * sizeOfLigth / 2), 70 * sizeOfLigth, 800);
                 isThereLight = true;
               }
-              for (let i = 0; i < arrayOfPositionsCharacters.length; i++) {
-                if (arrayOfPositionsCharacters[i][0] > mouseX - 49 && arrayOfPositionsCharacters[i][0] < mouseX + 49 && isThereLight) {
+              for (let i = 0; i < positionsAndSpeedOfCharacters.length; i++) {
+                if (positionsAndSpeedOfCharacters[i][0] > mouseX - 49 && positionsAndSpeedOfCharacters[i][0] < mouseX + 49 && isThereLight) {
                   let randomStart = random(1, 2); 
                   if (randomStart >= 1.5) {
-                    arrayOfPositionsCharacters[i][0] = -400;
+                    positionsAndSpeedOfCharacters[i][0] = -400;
                   } else {
-                    arrayOfPositionsCharacters[i][0] = 1000;
+                    positionsAndSpeedOfCharacters[i][0] = 1000;
                   }
                   currentScore++;
                 } 
@@ -455,17 +481,23 @@
           };
         };
 
-        //Score
-        let goal = 2;
+
+        //SCORE
+        let currentScore = 0;
+        let goal = 30;
+
+        //***Score function in Draw function
         let score = function () {
-          rect(300, 0, 170, 50);
+          rect(300, 0, 180, 50);
           fill(0, 0, 0);
           textSize(20);
           text("Goal: " + goal + " people", 305, 20);
           text("Current: " + currentScore + " people", 305, 40);
         };
         
-        //Congratulations
+
+        //CONGRATULATIONS
+        //***Congratulations function in Draw function
         let congratulations = function () {
           fill(255, 255, 255)
           textSize(90);
@@ -475,17 +507,44 @@
           text("Congratulations!", 70, 200);
         }
 
-        let xxx = 1;
 
+        //FINAL ANIMATION WITH SPIRAL
+        let growthOfSpiral = 1;
 
-        let r = random(0, 255);
-        let g = random(0, 255);
-        let b = random(0, 255);
+        //Array of random colors for final animation
+        let colorsOfFinalAnimation = [[random(0, 255), true],
+                                      [random(0, 255), true],
+                                      [random(0, 255), true]
+        ];
 
-        let colorsOfFinalAnimation = [[r, true], [g, true], [b, false]]
+        //***Final animation function in Draw function
+        let finalAnimationWithSpiral = function () {
+          for (let i = 0; i < colorsOfFinalAnimation.length; i++) {
+            
+            if (colorsOfFinalAnimation[i][0] < 0) {
+              colorsOfFinalAnimation[i][1] = true;
+            } else if (colorsOfFinalAnimation[i][0] > 255) {
+              colorsOfFinalAnimation[i][1] = false;
+            }
+            if (colorsOfFinalAnimation[i][1] === true) {
+              colorsOfFinalAnimation[i][0] += 0.55;
+            } else {
+              colorsOfFinalAnimation[i][0] -= 0.55;
+            }
+          }
+          angle = 0.08 * growthOfSpiral;
+          x=(1+angle)*Math.cos(angle);
+          y=(1+angle)*Math.sin(angle);
+          fill(colorsOfFinalAnimation[0][0], colorsOfFinalAnimation[1][0], colorsOfFinalAnimation[2][0]);
+          stroke(0, 0, 0);
+          strokeWeight(1)
+          
+          ellipse((x * 0.013 * growthOfSpiral) + 800, (y * 0.013 * growthOfSpiral) + 660, growthOfSpiral * 0.2, growthOfSpiral * 0.2);
+          growthOfSpiral += 1;
+        }
+        
 
-
-
+        //DRAW FUNCTION (MAIN)
         draw = function () {
           if (currentScore < goal) {
             sky();        
@@ -500,42 +559,11 @@
             crosswalkStreetAndGrass();          
             characters();  
             ufo();
-            ligthOfAbduction();
-            score();
-
-            
-             
-
+            ligthOfUFO();
+            score();            
           } else {
             congratulations();
-
-
-            for (let i = 0; i < colorsOfFinalAnimation.length; i++) {
-              
-              if (colorsOfFinalAnimation[i][0] < 0) {
-                colorsOfFinalAnimation[i][1] = true;
-              } else if (colorsOfFinalAnimation[i][0] > 255) {
-                colorsOfFinalAnimation[i][1] = false;
-              }
-
-              if (colorsOfFinalAnimation[i][1] === true) {
-                colorsOfFinalAnimation[i][0] += 0.55;
-              } else {
-                colorsOfFinalAnimation[i][0] -= 0.55;
-              }
-            }
-
-
-
-            angle = 0.08 * xxx;
-            x=(1+angle)*Math.cos(angle);
-            y=(1+angle)*Math.sin(angle);
-            fill(colorsOfFinalAnimation[0][0], colorsOfFinalAnimation[1][0], colorsOfFinalAnimation[2][0]);
-            stroke(0, 0, 0);
-            strokeWeight(1)
-            
-            ellipse((x * 0.013 * xxx) + 800, (y * 0.013 * xxx) + 650, xxx * 0.2, xxx * 0.2);
-            xxx += 0.8;
+            finalAnimationWithSpiral();
           }
         }      
       }
@@ -544,5 +572,4 @@
     var canvas = document.getElementById("mycanvas"); 
     var processingInstance = new Processing(canvas, sketchProc); 
  </script>
-
 </html>
