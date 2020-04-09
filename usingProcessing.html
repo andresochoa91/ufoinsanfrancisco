@@ -47,7 +47,7 @@
         //ARRAYS
         //Array with random positions for characters
         let arrayOfPositionsCharacters = [];
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 3; i++) {
           let randomXForCharacters = random(0, 740);
           let randomYForCharacters = random(0, 45);
           let randomSpeedForCharacters = random(1, 30);
@@ -56,8 +56,8 @@
                                            randomYForCharacters,
                                            randomSpeedForCharacters,
                                            randomNewPosition,
-                                           true]  
-          );
+                                           true
+                                          ]);
         }
  
         //Arrays to define color of buildings
@@ -69,7 +69,13 @@
           let randomX = random(-40, 800);
           let randomWeigth = random(30, 50);
           let randomHeight = random(-200, -100);
-          arrayOfRandomNumbers.push([randomX, randomWeigth, randomHeight]);
+          let randomRForBuildingColor = random(140, 180);
+          let randomGForBuildingColor = random(140, 180);
+          let randomBForBuildingColor = random(140, 180);
+          arrayOfRandomNumbers.push([randomX,
+                                     randomWeigth,
+                                     randomHeight,
+                                     [randomRForBuildingColor, randomGForBuildingColor, randomBForBuildingColor]]);
         }
         
         //Array with position of random stars
@@ -92,20 +98,20 @@
         };
 
         let colorsForPaintedLadiesDay = {
-          1: [227, 221, 153],
-          2: [183, 193, 159],
-          3: [251, 255, 108],
-          4: [108, 201, 231],
+          1: [255, 100, 100],
+          2: [255, 150, 60],
+          3: [255, 255, 100],
+          4: [100, 255, 100],
           5: [84, 89, 255],
-          6: [242, 172, 97]
+          6: [133, 100, 255]
         };
         
-        //Object of clouds information
-        let objectOfCloudsInformation = {};  //Array instead
+        //Array with clouds information
+        let arrayWithCloudsInformation = []; 
         for (let i = 1; i < 7; i++) {
           let randomXForClouds = random(0, 800);
           let randomSpeedForClouds = random(1, 5);
-          objectOfCloudsInformation[i] = [((50 * i) - 50), randomSpeedForClouds, randomXForClouds];          
+          arrayWithCloudsInformation.push([((50 * i) - 50), randomSpeedForClouds, randomXForClouds]);          
         }
 
         //DRAW FUNCTIONS
@@ -141,9 +147,9 @@
           stroke(0, 0, 0);
           strokeWeight(3);
           arc(200, sunMovement, 150, 100, 0, PI);
-          fill(0, 0, 0);
           ellipse(250, sunMovement, 10, 10);
           ellipse(153, sunMovement, 10, 10);
+          fill(0, 0, 0);
           sunMovement -= 5;
           
           if (colorOfSky[2] <= 60 && sunMovement === -1300) { //Separate in different functions
@@ -255,23 +261,23 @@
           noStroke();
           fill(255, 255, 255);
 
-          for (let key in objectOfCloudsInformation) {
-            let xCloud = objectOfCloudsInformation[key][0];
-            ellipse(objectOfCloudsInformation[key][2]     , xCloud, 126, 97);
-            ellipse(objectOfCloudsInformation[key][2] + 62, xCloud, 70 , 60);
-            ellipse(objectOfCloudsInformation[key][2] - 62, xCloud, 70 , 60);
+          for (let i = 0; i < arrayWithCloudsInformation.length; i++) {
+            let xCloud = arrayWithCloudsInformation[i][0];
+            ellipse(arrayWithCloudsInformation[i][2]     , xCloud, 126, 97);
+            ellipse(arrayWithCloudsInformation[i][2] + 62, xCloud, 70 , 60);
+            ellipse(arrayWithCloudsInformation[i][2] - 62, xCloud, 70 , 60);
             
-            if (key % 2 === 0) {
-              if (objectOfCloudsInformation[key][2] > 1000) {
-                objectOfCloudsInformation[key][2] = -200;
+            if (i % 2 === 0) {
+              if (arrayWithCloudsInformation[i][2] > 1000) {
+                arrayWithCloudsInformation[i][2] = -200;
               } else {
-                objectOfCloudsInformation[key][2] += objectOfCloudsInformation[key][1];
+                arrayWithCloudsInformation[i][2] += arrayWithCloudsInformation[i][1];
               }
             } else {
-              if (objectOfCloudsInformation[key][2] < -100) {
-                objectOfCloudsInformation[key][2] = 1000;
+              if (arrayWithCloudsInformation[i][2] < -100) {
+                arrayWithCloudsInformation[i][2] = 1000;
               } else {
-                objectOfCloudsInformation[key][2] -= objectOfCloudsInformation[key][1];
+                arrayWithCloudsInformation[i][2] -= arrayWithCloudsInformation[i][1];
               }
             }
           }
@@ -290,7 +296,7 @@
             if (colorOfSky[2] < 255) {
               fill(randomColor1Buildings, randomColor2Buildings, randomColor3Buildings);
             } else {
-              fill(colorsForBuildings[0], colorsForBuildings[1], colorsForBuildings[2]);
+              fill(arrayOfRandomNumbers[j][3][0], arrayOfRandomNumbers[j][3][1], arrayOfRandomNumbers[j][3][2]);
             }
 
             rect(arrayOfRandomNumbers[j][0],
@@ -456,9 +462,9 @@
         };
 
         //Score
-        let goal = 2;
+        let goal = 30;
         let score = function () {
-          rect(300, 0, 170, 50);
+          rect(300, 0, 180, 50);
           fill(0, 0, 0);
           textSize(20);
           text("Goal: " + goal + " people", 305, 20);
@@ -524,9 +530,6 @@
                 colorsOfFinalAnimation[i][0] -= 0.55;
               }
             }
-
-
-
             angle = 0.08 * xxx;
             x=(1+angle)*Math.cos(angle);
             y=(1+angle)*Math.sin(angle);
@@ -534,8 +537,8 @@
             stroke(0, 0, 0);
             strokeWeight(1)
             
-            ellipse((x * 0.013 * xxx) + 800, (y * 0.013 * xxx) + 650, xxx * 0.2, xxx * 0.2);
-            xxx += 0.8;
+            ellipse((x * 0.013 * xxx) + 800, (y * 0.013 * xxx) + 660, xxx * 0.2, xxx * 0.2);
+            xxx += 1;
           }
         }      
       }
