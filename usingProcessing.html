@@ -12,7 +12,7 @@
  <script src="https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js"></script> 
  
  <script>
-    var sketchProc = function(processingInstance) {
+    const sketchProc = (processingInstance) => {
      with (processingInstance) {
         //THE FOLLOWING CODE IS WRITEN BY JOHAN ANDRES OCHOA
         //jandresochoa91@gmail.com
@@ -30,7 +30,7 @@
         let colorOfSky = [0, 228, 255];
 
         //***Sky function in Draw function
-        let sky = function () {
+        const sky =  () => {
           background(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
           if (sunMovement < -400 && colorOfSky[2] > 0) {
             if (colorOfSky[1] > 0) {
@@ -57,7 +57,7 @@
         let sunMovement = 380;
         
         //***Sun function in Draw function
-        let sun = function () {
+        const sun = () => {
           fill(255, 255, 0);
           noStroke();
           ellipse(200, sunMovement, 200, 200);
@@ -70,7 +70,7 @@
           fill(0, 0, 0);
           sunMovement -= 5;
           
-          if (colorOfSky[2] <= 60 && sunMovement === -1300) { //Separate in different functions
+          if (colorOfSky[2] <= 60 && sunMovement === -1300) {    //Separate in different functions
             sunMovement = 750;
           }
         };
@@ -82,7 +82,7 @@
         let moonPhase = 1;    //There are 3 phases in this code: 1: Waxing Crescent, 2: First Quarter, 3: Full.
 
         //***Moon function in Draw function
-        let moon = function () {
+        const moon = () => {
           if (colorOfSky[2] <= 160) {
             noStroke();
             fill(255, 255, 255);
@@ -123,7 +123,7 @@
         }
 
         //***Stars function in Draw function
-        let stars = function () {
+        const stars = () => {
           for (var i = 0; i < allTheStars.length; i++) {
             
             if (colorOfSky[2] < 255) {
@@ -158,7 +158,7 @@
 
         //TRANSAMERICA PYRAMID BUILDING
         //***Pyramid function in Draw function
-        let pyramid = function () {
+        const pyramid = () =>  {
           stroke(0, 0, 0);
           strokeWeight(3);
           let randomRPyramidColor = random(0, 255);
@@ -181,7 +181,7 @@
 
         //SALESFORCE BUILDING
         //***Salesforse function in Draw function
-        let salesforce = function () {
+        const salesforce = () => {
           let randomRSalesforceColor = random(0, 255);
           let randomGSalesforceColor = random(0, 255);
           let randomBSalesforceColor = random(0, 255);
@@ -224,7 +224,7 @@
         }
 
         //***Clouds function in Draw function
-        let clouds = function () {
+        const clouds = () => {
           noStroke();
           fill(255, 255, 255);
 
@@ -270,7 +270,7 @@
         }
 
         //***Buildings function in Draw function
-        let buildings = function () {
+        const buildings = () => {
           stroke(0, 0, 0);
 
           for (let j = 0; j < buildingsAttributes.length; j++) {
@@ -307,7 +307,7 @@
         };
 
         //***Painted Ladies function in Draw function
-        let paintedLadies = function () {
+        const paintedLadies = () => {
           fill(225, 204, 127);
           let movePaintedLadyToX = -10;
           let movePaintedLadyToY = -60;
@@ -349,7 +349,7 @@
         
         //CROSSWALK, STREET AND GRASS
         //***function in Draw function
-        let crosswalkStreetAndGrass = function () {
+        const crosswalkStreetAndGrass = () => {
           stroke(0, 0, 0);
           strokeWeight(3);
           //Crosswalk
@@ -388,7 +388,7 @@
         }
 
         //***Characters function in Draw function
-        let characters = function () {
+        const characters = () => {
           for (let i = 0; i < positionsAndSpeedOfCharacters.length; i++) {
             noStroke();
             
@@ -433,7 +433,7 @@
 
         //UFO
         //***ufo function in Draw function
-        let ufo = function () {
+        const ufo = () => {
           let mouseXForUFO = mouseX;
           let mouseYForUFO = mouseY;
           let sizeOfUFO = mouseYForUFO * 0.006;
@@ -456,8 +456,8 @@
 
         //LIGTH OF UFO
         //***Light of UFO function in Draw function
-        let ligthOfUFO = function () {  //Change light
-          mousePressed = function () {
+        const ligthOfUFO = () => {  //Change light
+          mousePressed = () => {
             if (currentScore < goal && countdown > 0) {
               let mouseXForAbductionLight = mouseX;
               let mouseYForAbductionLight = mouseY;
@@ -497,7 +497,7 @@
         let countdown = 3000;
 
         //***Score function in Draw function
-        let score = function () {
+        const score = () => {
           rect(300, 0, 180, 110);
           fill(0, 0, 0);
           textSize(20);
@@ -512,7 +512,7 @@
 
         //YOU LOSE
         //***you lose function in Draw function
-        let youLose = function () {
+        const youLose = () => {
           textSize(60);
           fill(255, 255, 255);
           text("You lose", 263, 170);
@@ -524,7 +524,7 @@
           stroke(0, 0, 0);
           textSize(40)
           text("Try again", 300, 470);
-          mousePressed = function () {
+          mousePressed = () => {
             if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
               currentScore = 0;
               countdown = 3000;
@@ -539,14 +539,14 @@
 
         //Array of random colors for animation with spiral
         let colorsOfAnimationWithSpiral = [[random(0, 255), true],
-                                          [random(0, 255), true],
-                                          [random(0, 255), true]
+                                           [random(0, 255), true],
+                                           [random(0, 255), true]
         ];
 
 
         //CONGRATULATIONS
         //***Congratulations function in Draw function
-        let congratulations = function () {
+        const congratulations = () => {
           fill(255, 255, 255)
           textSize(90);
           text("Congratulations!", 74, 200);
@@ -560,7 +560,7 @@
           stroke(0, 0, 0);
           textSize(40)
           text("Next level", 290, 470);
-          mousePressed = function () {
+          mousePressed = () => {
             if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
               currentScore = 0;
               countdown = 3000;
@@ -575,7 +575,7 @@
 
 
         //***Final animation function in Draw function
-        let finalAnimationWithSpiral = function (xxx, yyy) {
+        const finalAnimationWithSpiral = (xSpiral, ySpiral) => {
           for (let i = 0; i < colorsOfAnimationWithSpiral.length; i++) {
             
             if (colorsOfAnimationWithSpiral[i][0] < 0) {
@@ -589,18 +589,18 @@
               colorsOfAnimationWithSpiral[i][0] -= 0.55;
             }
           }
-          angle = 0.08 * growthOfSpiral;
-          x=(1+angle)*Math.cos(angle);
-          y=(1+angle)*Math.sin(angle);
+          let angle = 0.08 * growthOfSpiral;
+          let x = (1+angle)*Math.cos(angle);
+          let y = (1+angle)*Math.sin(angle);
           fill(colorsOfAnimationWithSpiral[0][0], colorsOfAnimationWithSpiral[1][0], colorsOfAnimationWithSpiral[2][0]);
           strokeWeight(1);          
-          ellipse((x * 0.013 * growthOfSpiral) + xxx, (y * 0.013 * growthOfSpiral) + yyy, growthOfSpiral * 0.2, growthOfSpiral * 0.2);
+          ellipse((x * 0.013 * growthOfSpiral) + xSpiral, (y * 0.013 * growthOfSpiral) + ySpiral, growthOfSpiral * 0.2, growthOfSpiral * 0.2);
           growthOfSpiral += 0.5;
         }
 
         //GAME OVER
         //Game over function in Draw function
-        let gameOver = function () {
+        const gameOver = () => {
           finalAnimationWithSpiral(400, 330);
           textSize(60);
           fill(255, 255, 255);
@@ -619,7 +619,7 @@
           stroke(0, 0, 0);
           textSize(40)
           text("Play again!", 300, 470);
-          mousePressed = function () {
+          mousePressed = () => {
             if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
               currentScore = 0;
               countdown = 3000;
@@ -632,7 +632,7 @@
         }
 
         //DRAW FUNCTION (MAIN)
-        draw = function () {
+        draw = () => {
           if (currentScore < goal && countdown > 0) {
             sky();        
             sun();
