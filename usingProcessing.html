@@ -297,21 +297,12 @@
  
 
         //PAINTED LADIES
-        let colorsForPaintedLadiesNightTime = {
-          1: [255, 0, 0],
-          2: [255, 133, 0],
-          3: [255, 255, 0],
-          4: [0, 255, 0],
-          5: [0, 0, 255],
-          6: [133, 0, 255]
-        };
-
-        let colorsForPaintedLadiesDayTime = {
+        let colorsForPaintedLadies = {
           1: [255, 100, 100],
-          2: [255, 150, 60],
+          2: [255, 150,  60],
           3: [255, 255, 100],
           4: [100, 255, 100],
-          5: [84, 89, 255],
+          5: [84,  89,  255],
           6: [133, 100, 255]
         };
 
@@ -320,12 +311,17 @@
           fill(225, 204, 127);
           let movePaintedLadyToX = -10;
           let movePaintedLadyToY = -60;
+          let randomNumberChangingPaintedLadies = Math.round(random(1, 2));
             
           for (let i = 1; i < 6 + 1; i++) {            
-            if (colorOfSky[2] < 255) {            
-              fill(colorsForPaintedLadiesNightTime[i][0], colorsForPaintedLadiesNightTime[i][1], colorsForPaintedLadiesNightTime[i][2]);
+            if (colorOfSky[2] < 255) {
+              if (randomNumberChangingPaintedLadies % 2 === 0) {
+                fill(random(0, 255), random(0, 255), random(0, 255));
+              } else {
+                fill(colorsForPaintedLadies[i][0], colorsForPaintedLadies[i][1], colorsForPaintedLadies[i][2]);  
+              }           
             } else {
-              fill(colorsForPaintedLadiesDayTime[i][0], colorsForPaintedLadiesDayTime[i][1], colorsForPaintedLadiesDayTime[i][2]);
+              fill(colorsForPaintedLadies[i][0], colorsForPaintedLadies[i][1], colorsForPaintedLadies[i][2]);
             }
             stroke(0, 0, 0);
             strokeWeight(3);
@@ -462,7 +458,7 @@
         //***Light of UFO function in Draw function
         let ligthOfUFO = function () {  //Change light
           mousePressed = function () {
-            if (currentScore < goal) {
+            if (currentScore < goal && countdown > 0) {
               let mouseXForAbductionLight = mouseX;
               let mouseYForAbductionLight = mouseY;
               let sizeOfLigth = mouseYForAbductionLight * 0.006;
@@ -495,15 +491,22 @@
 
         //SCORE
         let currentScore = 0;
-        let goal = 30;
+        let goal = 6;
+        let level = 1;
+        let lives = 3;
+        let countdown = 3000;
 
         //***Score function in Draw function
         let score = function () {
-          rect(300, 0, 180, 50);
+          rect(300, 0, 180, 110);
           fill(0, 0, 0);
           textSize(20);
-          text("Goal: " + goal + " people", 305, 20);
+          text("Goal: " + goal + " people", 325, 20);
           text("Current: " + currentScore + " people", 305, 40);
+          text("Level: " + level, 360, 60);
+          text((countdown/100).toFixed(1), 375, 80)
+          text("Lives: " + lives, 360, 100);
+          countdown -= 3;
         };
         
 
@@ -516,6 +519,23 @@
           fill(0, 0, 0);
           textSize(90)
           text("Congratulations!", 70, 200);
+
+          fill(255, 255, 255);
+          rect(280, 420, 200, 80);
+          fill(0, 0, 0);
+          stroke(0, 0, 0);
+          textSize(40)
+          text("Next level", 290, 470);
+          mousePressed = function () {
+            if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
+              currentScore = 0;
+              countdown = 3000;
+              goal += 3;
+              growthOfSpiral = 1;
+              level++;
+            }
+          }
+
         }
 
 
@@ -529,7 +549,7 @@
         ];
 
         //***Final animation function in Draw function
-        let finalAnimationWithSpiral = function () {
+        let finalAnimationWithSpiral = function (xxx, yyy) {
           for (let i = 0; i < colorsOfFinalAnimation.length; i++) {
             
             if (colorsOfFinalAnimation[i][0] < 0) {
@@ -547,17 +567,14 @@
           x=(1+angle)*Math.cos(angle);
           y=(1+angle)*Math.sin(angle);
           fill(colorsOfFinalAnimation[0][0], colorsOfFinalAnimation[1][0], colorsOfFinalAnimation[2][0]);
-          stroke(0, 0, 0);
-          strokeWeight(1)
-          
-          ellipse((x * 0.013 * growthOfSpiral) + 800, (y * 0.013 * growthOfSpiral) + 660, growthOfSpiral * 0.2, growthOfSpiral * 0.2);
-          growthOfSpiral += 1;
+          strokeWeight(1);          
+          ellipse((x * 0.013 * growthOfSpiral) + xxx, (y * 0.013 * growthOfSpiral) + yyy, growthOfSpiral * 0.2, growthOfSpiral * 0.2);
+          growthOfSpiral += 0.5;
         }
-        
 
         //DRAW FUNCTION (MAIN)
         draw = function () {
-          if (currentScore < goal) {
+          if (currentScore < goal && countdown > 0) {
             sky();        
             sun();
             moon();
@@ -571,10 +588,62 @@
             characters();  
             ufo();
             ligthOfUFO();
-            score();            
+            score();           
+          } else  if (countdown === 0) {
+            if (lives > 1) {
+              textSize(60);
+              fill(255, 255, 255);
+              text("You lose", 263, 170);
+              fill(0, 0, 0);
+              text("You lose", 260, 170);
+              fill(255, 255, 255);
+              rect(280, 420, 200, 80);
+              fill(0, 0, 0);
+              stroke(0, 0, 0);
+              textSize(40)
+              text("Try again", 300, 470);
+              mousePressed = function () {
+                if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
+                  currentScore = 0;
+                  countdown = 3000;
+                  lives -= 1;
+                }
+              }
+            } else if (lives === 1 && currentScore < goal) {
+              finalAnimationWithSpiral(400, 330);
+              textSize(60);
+              fill(255, 255, 255);
+              text("GAME OVER", 203, 170);
+              fill(0, 0, 0);
+              text("GAME OVER", 200, 170);
+              fill(255, 255, 255);
+
+
+              text("Your record: Level " + level, 203 - 80, 250);
+              fill(0, 0, 0);
+              text("Your record: Level " + level, 200 - 80, 250);
+              fill(255, 255, 255);
+
+
+              rect(275, 420, 240, 80);
+              fill(0, 0, 0);
+              stroke(0, 0, 0);
+              textSize(40)
+              text("Play again!", 300, 470);
+              mousePressed = function () {
+                if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
+                  currentScore = 0;
+                  countdown = 3000;
+                  lives = 3;
+                  growthOfSpiral = 1;
+                  level = 1;
+                  goal = 6;
+                }
+              }
+            }
           } else {
             congratulations();
-            finalAnimationWithSpiral();
+            finalAnimationWithSpiral(random(0, 800), random(0, 660));
           }
         }      
       }
