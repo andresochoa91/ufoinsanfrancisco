@@ -510,6 +510,40 @@
         };
         
 
+        //YOU LOSE
+        //***you lose function in Draw function
+        let youLose = function () {
+          textSize(60);
+          fill(255, 255, 255);
+          text("You lose", 263, 170);
+          fill(0, 0, 0);
+          text("You lose", 260, 170);
+          fill(255, 255, 255);
+          rect(280, 420, 200, 80);
+          fill(0, 0, 0);
+          stroke(0, 0, 0);
+          textSize(40)
+          text("Try again", 300, 470);
+          mousePressed = function () {
+            if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
+              currentScore = 0;
+              countdown = 3000;
+              lives -= 1;
+            }
+          }
+        }
+        
+
+        //ANIMATION WITH SPIRAL
+        let growthOfSpiral = 1;
+
+        //Array of random colors for animation with spiral
+        let colorsOfAnimationWithSpiral = [[random(0, 255), true],
+                                          [random(0, 255), true],
+                                          [random(0, 255), true]
+        ];
+
+
         //CONGRATULATIONS
         //***Congratulations function in Draw function
         let congratulations = function () {
@@ -535,41 +569,66 @@
               level++;
             }
           }
-
+          finalAnimationWithSpiral(random(0, 800), random(0, 660));
         }
 
 
-        //FINAL ANIMATION WITH SPIRAL
-        let growthOfSpiral = 1;
-
-        //Array of random colors for final animation
-        let colorsOfFinalAnimation = [[random(0, 255), true],
-                                      [random(0, 255), true],
-                                      [random(0, 255), true]
-        ];
 
         //***Final animation function in Draw function
         let finalAnimationWithSpiral = function (xxx, yyy) {
-          for (let i = 0; i < colorsOfFinalAnimation.length; i++) {
+          for (let i = 0; i < colorsOfAnimationWithSpiral.length; i++) {
             
-            if (colorsOfFinalAnimation[i][0] < 0) {
-              colorsOfFinalAnimation[i][1] = true;
-            } else if (colorsOfFinalAnimation[i][0] > 255) {
-              colorsOfFinalAnimation[i][1] = false;
+            if (colorsOfAnimationWithSpiral[i][0] < 0) {
+              colorsOfAnimationWithSpiral[i][1] = true;
+            } else if (colorsOfAnimationWithSpiral[i][0] > 255) {
+              colorsOfAnimationWithSpiral[i][1] = false;
             }
-            if (colorsOfFinalAnimation[i][1] === true) {
-              colorsOfFinalAnimation[i][0] += 0.55;
+            if (colorsOfAnimationWithSpiral[i][1] === true) {
+              colorsOfAnimationWithSpiral[i][0] += 0.55;
             } else {
-              colorsOfFinalAnimation[i][0] -= 0.55;
+              colorsOfAnimationWithSpiral[i][0] -= 0.55;
             }
           }
           angle = 0.08 * growthOfSpiral;
           x=(1+angle)*Math.cos(angle);
           y=(1+angle)*Math.sin(angle);
-          fill(colorsOfFinalAnimation[0][0], colorsOfFinalAnimation[1][0], colorsOfFinalAnimation[2][0]);
+          fill(colorsOfAnimationWithSpiral[0][0], colorsOfAnimationWithSpiral[1][0], colorsOfAnimationWithSpiral[2][0]);
           strokeWeight(1);          
           ellipse((x * 0.013 * growthOfSpiral) + xxx, (y * 0.013 * growthOfSpiral) + yyy, growthOfSpiral * 0.2, growthOfSpiral * 0.2);
           growthOfSpiral += 0.5;
+        }
+
+        //GAME OVER
+        //Game over function in Draw function
+        let gameOver = function () {
+          finalAnimationWithSpiral(400, 330);
+          textSize(60);
+          fill(255, 255, 255);
+          text("GAME OVER", 203, 170);
+          fill(0, 0, 0);
+          text("GAME OVER", 200, 170);
+          fill(255, 255, 255);
+
+          text("Your record: Level " + level, 203 - 80, 250);
+          fill(0, 0, 0);
+          text("Your record: Level " + level, 200 - 80, 250);
+          fill(255, 255, 255);
+
+          rect(275, 420, 240, 80);
+          fill(0, 0, 0);
+          stroke(0, 0, 0);
+          textSize(40)
+          text("Play again!", 300, 470);
+          mousePressed = function () {
+            if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
+              currentScore = 0;
+              countdown = 3000;
+              lives = 3;
+              growthOfSpiral = 1;
+              level = 1;
+              goal = 6;
+            }
+          }
         }
 
         //DRAW FUNCTION (MAIN)
@@ -591,59 +650,12 @@
             score();           
           } else  if (countdown === 0) {
             if (lives > 1) {
-              textSize(60);
-              fill(255, 255, 255);
-              text("You lose", 263, 170);
-              fill(0, 0, 0);
-              text("You lose", 260, 170);
-              fill(255, 255, 255);
-              rect(280, 420, 200, 80);
-              fill(0, 0, 0);
-              stroke(0, 0, 0);
-              textSize(40)
-              text("Try again", 300, 470);
-              mousePressed = function () {
-                if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
-                  currentScore = 0;
-                  countdown = 3000;
-                  lives -= 1;
-                }
-              }
-            } else if (lives === 1 && currentScore < goal) {
-              finalAnimationWithSpiral(400, 330);
-              textSize(60);
-              fill(255, 255, 255);
-              text("GAME OVER", 203, 170);
-              fill(0, 0, 0);
-              text("GAME OVER", 200, 170);
-              fill(255, 255, 255);
-
-
-              text("Your record: Level " + level, 203 - 80, 250);
-              fill(0, 0, 0);
-              text("Your record: Level " + level, 200 - 80, 250);
-              fill(255, 255, 255);
-
-
-              rect(275, 420, 240, 80);
-              fill(0, 0, 0);
-              stroke(0, 0, 0);
-              textSize(40)
-              text("Play again!", 300, 470);
-              mousePressed = function () {
-                if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
-                  currentScore = 0;
-                  countdown = 3000;
-                  lives = 3;
-                  growthOfSpiral = 1;
-                  level = 1;
-                  goal = 6;
-                }
-              }
+              youLose();
+            } else if (lives === 1 && currentScore < goal) {              
+              gameOver();
             }
           } else {
             congratulations();
-            finalAnimationWithSpiral(random(0, 800), random(0, 660));
           }
         }      
       }
