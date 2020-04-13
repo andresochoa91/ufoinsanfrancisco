@@ -74,8 +74,8 @@
               }
             } 
           }
-        };
 
+        };
         //SKY
         let colorOfSky = [0, 228, 255];
 
@@ -609,6 +609,7 @@
                 let xAliens = aliensAttributes[i][0];  //X position for aliens
                 if (xAliens > mouseX - 49 && xAliens < mouseX + 49 && isThereBeam) {
                   let randomStart = random(1, 2); 
+                  aliensAttributes[i][1] = random(0, 90);
                   if (randomStart >= 1.5) {
                     aliensAttributes[i][0] = -400;
                   } else {
