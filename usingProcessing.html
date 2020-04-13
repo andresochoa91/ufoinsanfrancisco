@@ -14,16 +14,11 @@
  <script>
     const sketchProc = (processingInstance) => {
      with (processingInstance) {
-        //THE FOLLOWING CODE IS WRITEN BY JOHAN ANDRES OCHOA
+        //THE FOLLOWING CODE IS WRITEN BY JOHAN ANDRES OCHOA QUIROZ
         //jandresochoa91@gmail.com
-       
-        //WHEN I USE X AND Y, I USUALLY REFFER TO X AXIS AND Y AXIS. 
-        //Example: sizeXStar, randomXForAliens, randomXForClouds, etc
 
-        //I'VE USED *** IN COMMENTS TO REFFER FUNCTIONS IN THE DRAW FUNCTION (MAIN)
-
-        size(800, 650); 
-        frameRate(300);
+        size(800, 650);
+        frameRate(80);
 
         //INTRODUCTION
         let isIntroduction = true;
@@ -73,7 +68,7 @@
           keyPressed = () => {
             if (keyCode === ENTER) {
               if (isKeyPressed) {
-                isKeyPressed = false;
+                isKeyPressed = false;                
               } else {
                 isKeyPressed = true;
               }
@@ -89,20 +84,20 @@
           background(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
           if (sunMovement < -400 && colorOfSky[2] > 0) {
             if (colorOfSky[1] > 0) {
-              colorOfSky[1] -= 5;
+              colorOfSky[1] -= 2;
             } else {
               colorOfSky[1] = 0;
               if (colorOfSky[2] <= 40) {
                 colorOfSky[2] = 40;    //Defined 40 because I didn't want the sky to be totally black
               } else {
-                colorOfSky[2] -= 5;
+                colorOfSky[2] -= 2;
               }
             }
           } else if (sunMovement > -200 && colorOfSky[1] < 228) {  //When the sun.....
             if (colorOfSky[2] < 255) {
-              colorOfSky[2] += 4;
+              colorOfSky[2] += 2;
             } else {
-              colorOfSky[1] += 4;
+              colorOfSky[1] += 2;
             }
           }
         };  
@@ -115,15 +110,12 @@
         const sun = () => {
           fill(255, 255, 0);
           noStroke();
-          ellipse(200, sunMovement, 200, 200);
+          ellipse(200, sunMovement, 130, 130);
           noFill();
           stroke(0, 0, 0);
           strokeWeight(3);
-          arc(200, sunMovement, 150, 100, 0, PI);
-          ellipse(250, sunMovement, 10, 10);
-          ellipse(153, sunMovement, 10, 10);
           fill(0, 0, 0);
-          sunMovement -= 5;
+          sunMovement -= 2;
           
           if (colorOfSky[2] <= 60 && sunMovement === -1300) {    //Separate in different functions
             sunMovement = 750;
@@ -152,8 +144,8 @@
             } else if (moonPhase > 3) {
               moonPhase = 1
             }
-            moveMoonX -= 2;
-            moveMoonY -= 2;
+            moveMoonX -= 1;
+            moveMoonY -= 1;
           } else {
             moveMoonX = 850;
             moveMoonY = 200;
@@ -165,8 +157,8 @@
 
 
         //STARS
-        let sizeXStar = 0.001;
-        let sizeYStar = 0.001;
+        let sizeXStar = 0.0004;
+        let sizeYStar = 0.0004;
         let isMidnight = false;
 
         //Array with position of random stars
@@ -187,22 +179,22 @@
               ellipse(allTheStars[i][0], allTheStars[i][1], sizeXStar, sizeYStar);
               
               if (isMidnight) {
-                sizeXStar -= 0.001;
-                sizeYStar -= 0.001;
+                sizeXStar -= 0.0004;
+                sizeYStar -= 0.0004;
               } else {
-                sizeXStar += 0.001;
-                sizeYStar += 0.001;
+                sizeXStar += 0.0004;
+                sizeYStar += 0.0004;
               }
               
               if (sizeXStar > 4) {
-                sizeXStar -= 0.001;
-                sizeYStar -= 0.001;
+                sizeXStar -= 0.0004;
+                sizeYStar -= 0.0004;
                 isMidnight = true;
               } 
 
               if (colorOfSky[2] > 250) {
-                sizeXStar = 0.001;
-                sizeYStar = 0.001;
+                sizeXStar = 0.0004;
+                sizeYStar = 0.0004;
                 isMidnight = false;
               }
             } 
@@ -215,12 +207,12 @@
         const pyramid = () =>  {
           stroke(0, 0, 0);
           strokeWeight(3);
-          let randomRPyramidColor = random(0, 255);
-          let randomGPyramidColor = random(0, 255);
-          let randomBPyramidColor = random(0, 255);
+          let randomRPyramid = random(0, 255);
+          let randomGPyramid = random(0, 255);
+          let randomBPyramid = random(0, 255);
 
           if (colorOfSky[2] < 255) {
-            fill(randomRPyramidColor, randomGPyramidColor, randomBPyramidColor);
+            fill(randomRPyramid, randomGPyramid, randomBPyramid);
           } else {
             fill(buildingsAttributes[0][3][0],  //I used position 0, but you can use any other position of the array
                  buildingsAttributes[0][3][1],  //I used position 0, but you can use any other position of the array
@@ -270,7 +262,7 @@
         for (let i = 1; i < 7; i++) {
           let randomXForClouds = random(0, 800);
           let setYForClouds = (50 * i) - 50;
-          let randomSpeedForClouds = random(1, 5);
+          let randomSpeedForClouds = random(1, 3);
 
           cloudsAttributes.push([setYForClouds,  
                                  randomSpeedForClouds,
@@ -351,7 +343,7 @@
           6: [133, 100, 255]
         };
 
-        let PaintedLady = function (xAxis, yAxis, color) {
+        const PaintedLady = function (xAxis, yAxis, color) {
           this.xAxis = xAxis;
           this.yAxis = yAxis;
           this.color = color; 
@@ -359,6 +351,12 @@
           PaintedLady.prototype.show = function() {
             const { xAxis, yAxis, color } = this;
             
+            fill(255, 255, 255);
+            triangle(-5 + xAxis, 587 - yAxis,
+                     60 + xAxis, 522 - yAxis,
+                    125 + xAxis, 587 - yAxis
+            );
+
             let randomNumberChangingPaintedLadies = Math.round(random(1, 2));           
             if (colorOfSky[2] < 255) {
               if (randomNumberChangingPaintedLadies % 2 === 0) {
@@ -373,21 +371,47 @@
             stroke(0, 0, 0);
             strokeWeight(3);
             rect(xAxis, 450 - yAxis + 137, 120, 180);
-            triangle(-5 + xAxis, 587 - yAxis,
-                     60 + xAxis, 522 - yAxis,
-                    125 + xAxis, 587 - yAxis
+            
+            triangle(10 + xAxis, 580 - yAxis,
+                     60 + xAxis, 532 - yAxis,
+                    108 + xAxis, 580 - yAxis
             );
+            
             quad(120 + xAxis, 587 - yAxis,
                  120 + xAxis, 767 - yAxis,
                  255 + xAxis, 747 - yAxis,
                  255 + xAxis, 577 - yAxis
             );
+
             fill(40, 40, 40);
             quad(60 + xAxis, 522 - yAxis,
                 125 + xAxis, 587 - yAxis,
                 260 + xAxis, 577 - yAxis,
                 190 + xAxis, 517 - yAxis    
-            ); 
+            );
+            
+            fill(255, 255, 255);
+            rect(xAxis      , 590 - yAxis, 7, 77);
+            rect(xAxis - 5  , 663 - yAxis, 7, 105);
+            rect(xAxis + 5  , 738 - yAxis, 35, 7);
+            rect(xAxis      , 745 - yAxis, 40, 7);
+            rect(xAxis - 3  , 752 - yAxis, 40, 7);
+            rect(xAxis - 6  , 759 - yAxis, 40, 7);
+            rect(xAxis - 9  , 766 - yAxis, 40, 7);
+            rect(xAxis - 12 , 773 - yAxis, 40, 7);
+            rect(xAxis + 35 , 663 - yAxis, 7, 105);
+            rect(xAxis - 5  , 663 - yAxis, 122, 7);
+            rect(xAxis      , 590 - yAxis,  120, 7);
+            rect(xAxis + 57 , 605 - yAxis, 50, 50);
+            rect(xAxis + 55 , 685 - yAxis, 50, 50);
+            rect(xAxis + 46 , 550 - yAxis, 25, 25);
+            rect(xAxis      , 651 - yAxis,  122, 4);
+            rect(xAxis + 120, 590 - yAxis, 7, 175);
+            fill(40, 40, 40);
+            rect(xAxis + 64 , 612 - yAxis, 35, 35);
+            rect(xAxis + 62 , 692 - yAxis, 35, 35);
+            fill(46, 15, 25);
+            rect(xAxis + 9  , 685 - yAxis, 26, 52); 
           };
         }
 
@@ -410,20 +434,20 @@
        
         
         //REDUCTION COLOR NIGHT   
-        let blackenedColor = 0;   //Applied in Aliens and Crosswalk, street and grass. 
+        let darkenColor = 0;   //Applied in Aliens and Crosswalk, street and grass. 
         
         const reductionColorNight = () => {
           if (colorOfSky[2] < 255) {
             if (isMidnight) {
-              blackenedColor += 0.8;
-              rgbCloudsColor += 2.1
+              darkenColor += 0.75;
+              rgbCloudsColor += 0.75
             } else {
-              blackenedColor -= 1;
-              rgbCloudsColor -= 2.1;
+              darkenColor -= 0.75;
+              rgbCloudsColor -= 0.75;
             }
           } 
           if (colorOfSky[2] > 250) {
-            blackenedColor = 0;
+            darkenColor = 0;
             rgbCloudsColor = 255;
           }
         }
@@ -437,48 +461,49 @@
           strokeWeight(3);
           
           //Sidewalk
-          fill(120 + blackenedColor, 120 + blackenedColor, 120 + blackenedColor);
+          fill(120 + darkenColor, 120 + darkenColor, 120 + darkenColor);
           quad(0, 650, 0, 560, 1000, 495, 650, 800);
           
           //Upper Green field
-          fill(0, 180 + blackenedColor, 0);
+          fill(0, 180 + darkenColor, 0);
           quad(0, 650, 0, 520, 1000, 560, 650, 800);
           
           //Lower Green Field
-          fill(0, 255 + blackenedColor, 0);
+          fill(0, 255 + darkenColor, 0);
           rect(0, 600, 810, 60);
         };
 
 
         //ALIENS
         //Random positions and speed for aliens 
-        let positionsAndSpeedOfAliens = [];
+        let aliensAttributes = [];
+        
         for (let i = 0; i < 3; i++) {
-          positionsAndSpeedOfAliens.push([random(0, 740), //Random X position for aliens   
-                                          random(0, 90),  //Random Y position for aliens
-                                          random(5, 10),  //Random speed for aliens
-                                          (0, 800),       //Random new position for aliens
-                                          true            //True or false to turn right or left
-                                         ]
+          aliensAttributes.push([random(0, 740), //Random X position for aliens   
+                                 random(0, 90),  //Random Y position for aliens
+                                 random(5, 10),  //Random speed for aliens
+                                 (0, 800),       //Random new position for aliens
+                                 true            //True or false to turn right or left
+                                ]
           );
         }
 
         //Function to increase speed of aliens. Inside Congratulation function
 
         const increaseSpeed = () => {
-          for (let i = 0; i < positionsAndSpeedOfAliens.length; i++) {
-            positionsAndSpeedOfAliens[i][2] += positionsAndSpeedOfAliens[i][2] * 0.05;   
+          for (let i = 0; i < aliensAttributes.length; i++) {
+            aliensAttributes[i][2] += aliensAttributes[i][2] * 0.05;   
           }
         };
 
         //***Aliens function in Draw function
         const aliens = () => {
-          for (let i = 0; i < positionsAndSpeedOfAliens.length; i++) {
-            let xPosAlien = positionsAndSpeedOfAliens[i][0];   //X position for aliens
-            let yPosAlien = positionsAndSpeedOfAliens[i][1];   //Y position for aliens
-            let speedAlien = positionsAndSpeedOfAliens[i][2];  //Speed for aliens
-            let newPosAlien = positionsAndSpeedOfAliens[i][3]; //New position for aliens
-            let isRight = positionsAndSpeedOfAliens[i][4];     //True or false to turn rigth or left            
+          for (let i = 0; i < aliensAttributes.length; i++) {
+            let xPosAlien = aliensAttributes[i][0];   //X position for aliens
+            let yPosAlien = aliensAttributes[i][1];   //Y position for aliens
+            let speedAlien = aliensAttributes[i][2];  //Speed for aliens
+            let newPosAlien = aliensAttributes[i][3]; //New position for aliens
+            let isRight = aliensAttributes[i][4];     //True or false to turn rigth or left            
             
             noStroke();
             
@@ -488,11 +513,11 @@
             stroke(0, 0, 0);
             strokeWeight(1);
 
-            fill(255 + blackenedColor, 60 + blackenedColor, 0);
+            fill(255 + darkenColor, 60 + darkenColor, 0);
             ellipse(xPosAlien, 633 - yPosAlien, 30, 20);
             
             
-            fill(80 + blackenedColor, 254 + blackenedColor, 104 + blackenedColor);
+            fill(80 + darkenColor, 254 + darkenColor, 104 + darkenColor);
             triangle(xPosAlien - 20, 609 - yPosAlien + 10,
                      xPosAlien - 40, 609 - yPosAlien - 20,
                      xPosAlien - 20, 609 - yPosAlien - 10
@@ -509,25 +534,25 @@
             stroke(0, 0, 0);
             strokeWeight(2)            
             arc(-12  + xPosAlien, 613 - yPosAlien, 8 ,  10, -3,  0);
-            arc(12  + xPosAlien, 613 - yPosAlien, 8 ,  10, -3,  0);
+            arc( 12  + xPosAlien, 613 - yPosAlien, 8 ,  10, -3,  0);
             fill(0, 0, 0);
             arc(xPosAlien, 620 - yPosAlien, 12,  10,  0, PI);
             
             if (newPosAlien > xPosAlien && isRight) {
-              positionsAndSpeedOfAliens[i][0] += speedAlien;
+              aliensAttributes[i][0] += speedAlien;
             } else {
               if (isRight) {
-                positionsAndSpeedOfAliens[i][4] = false;
-                positionsAndSpeedOfAliens[i][3] = random(-400, 1200);
+                aliensAttributes[i][4] = false;
+                aliensAttributes[i][3] = random(-400, 1200);
               }
             }
 
             if (newPosAlien <= xPosAlien && !isRight) {
-              positionsAndSpeedOfAliens[i][0] -= speedAlien;
+              aliensAttributes[i][0] -= speedAlien;
             } else {
               if (!isRight) {
-                positionsAndSpeedOfAliens[i][4] = true;
-                positionsAndSpeedOfAliens[i][3] = random(-400, 1200);
+                aliensAttributes[i][4] = true;
+                aliensAttributes[i][3] = random(-400, 1200);
               }
             }
           }
@@ -537,52 +562,57 @@
         //UFO
         //***ufo function in Draw function
         const ufo = () => {
-          let sizeOfUFO = mouseY * 0.006;
+          let mouseXUfo = mouseX;
+          let mouseYUfo = mouseY;
+          let ufoSize = mouseYUfo * 0.006;
 
-          if (mouseY > 220) {
-            mouseY = 220;
-            sizeOfUFO = 1.3;
+          if (mouseYUfo > 220) {
+            mouseYUfo = 220;
+            ufoSize = 1.3;
           }
-          
           stroke(0, 0, 0);
           strokeWeight(3);
           fill(38, 25, 25);
-          ellipse(mouseX, mouseY + (sizeOfUFO * 1) ,  70 * sizeOfUFO, 70 * sizeOfUFO);
+          ellipse(mouseXUfo, mouseYUfo + (ufoSize * 1) ,  70 * ufoSize, 70 * ufoSize);
           fill(112, 59, 112);
-          ellipse(mouseX, mouseY + (sizeOfUFO * 15), 150 * sizeOfUFO, 50 * sizeOfUFO);
+          ellipse(mouseXUfo, mouseYUfo + (ufoSize * 15), 150 * ufoSize, 50 * ufoSize);
           noStroke()
           fill(255, 255, 255);
-          ellipse(mouseX, mouseY + (sizeOfUFO * 30),  70 * sizeOfUFO, 25 * sizeOfUFO);
+          ellipse(mouseXUfo, mouseYUfo + (ufoSize * 30),  70 * ufoSize, 25 * ufoSize);
         };
 
 
-        //LIGHT OF UFO
-        //***Light of UFO function in Draw function
-        const lightOfUFO = () => {  //Change light
+        //UFO beam
+        //***ufo bean function in Draw function
+        const ufoBeam = () => {  //Change light
           mousePressed = () => {
             if (currentScore < goal && countdown > 0) {
-              
-              let sizeOfLight = mouseY * 0.006;
-              let isThereLight = false;
-              if (mouseY > 210) {
-                mouseY = 220;
-                sizeOfLight = 1.3;
+              let mouseXUfoBeam = mouseX;
+              let mouseYUfoBeam = mouseY;
+              let beamSize = mouseYUfoBeam * 0.006;
+              let isThereBeam = false;
+              if (mouseYUfoBeam > 210) {
+                mouseYUfoBeam = 220;
+                beamSize = 1.3;
               }
               if (mouseY < 270) {
                 noStroke();
                 fill(255, 255, 255);
-                rect(mouseX - (70 * sizeOfLight / 2), mouseY + (65 * sizeOfLight / 2), 70 * sizeOfLight, 800);
-                isThereLight = true;
+                rect(mouseXUfoBeam - (70 * beamSize / 2),
+                     mouseYUfoBeam + (65 * beamSize / 2),
+                     70 * beamSize,
+                     800
+                );
+                isThereBeam = true;
               }
-              for (let i = 0; i < positionsAndSpeedOfAliens.length; i++) {
-                let xPosAlien = positionsAndSpeedOfAliens[i][0];    //X position for aliens
-
-                if (xPosAlien > mouseX - 49 && xPosAlien < mouseX + 49 && isThereLight) {
+              for (let i = 0; i < aliensAttributes.length; i++) {
+                let xAliens = aliensAttributes[i][0];  //X position for aliens
+                if (xAliens > mouseX - 49 && xAliens < mouseX + 49 && isThereBeam) {
                   let randomStart = random(1, 2); 
                   if (randomStart >= 1.5) {
-                    positionsAndSpeedOfAliens[i][0] = -400;
+                    aliensAttributes[i][0] = -400;
                   } else {
-                    positionsAndSpeedOfAliens[i][0] = 1000;
+                    aliensAttributes[i][0] = 1000;
                   }
                   currentScore++;
                 } 
@@ -597,7 +627,7 @@
         let goal = 6;
         let level = 1;
         let lives = 3;
-        let countdown = 3000;
+        let countdown = 30;
 
         //***Score function in Draw function
         const score = () => {
@@ -608,10 +638,10 @@
           text("Goal: " + goal + " aliens", 325, 20);
           text("Current: " + currentScore + " aliens", 305, 40);
           text("Level: " + level, 360, 60);
-          text((countdown/100).toFixed(1), 375, 80)
+          text((countdown).toFixed(1), 375, 80)
           text("Lives: " + lives, 360, 100);
           if (!isKeyPressed) {
-            countdown -= 3;
+            countdown -= 0.03;
           }
         };
         
@@ -633,10 +663,11 @@
           mousePressed = () => {
             if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
               currentScore = 0;
-              countdown = 3000;
+              countdown = 30;
               lives -= 1;
-              for (let i = 0; i < positionsAndSpeedOfAliens.length; i++) {
-                positionsAndSpeedOfAliens[i][1] = random(0, 90);
+              for (let i = 0; i < aliensAttributes.length; i++) {
+                aliensAttributes[i][0] = random(0, 740);
+                aliensAttributes[i][1] = random(0, 90);
               }              
             }
           }
@@ -648,9 +679,46 @@
 
         //Array of random colors for animation with spiral
         let colorsSpiral = [[random(0, 255), true],
-                                           [random(0, 255), true],
-                                           [random(0, 255), true]
+                            [random(0, 255), true],
+                            [random(0, 255), true]
         ];
+
+        //***Animation with spiral function in Draw function
+        const animationWithSpiral = (xSpiral, ySpiral, hasStroke) => {
+          for (let i = 0; i < colorsSpiral.length; i++) {
+            
+            if (colorsSpiral[i][0] < 0) {
+              colorsSpiral[i][1] = true;
+            } else if (colorsSpiral[i][0] > 255) {
+              colorsSpiral[i][1] = false;
+            }
+
+            if (colorsSpiral[i][1] === true) {
+              colorsSpiral[i][0] += 2;
+            } else {
+              colorsSpiral[i][0] -= 2;
+            }
+          }
+
+          let angle = 0.08 * growthOfSpiral;
+          let x = (1 + angle)*Math.cos(angle);
+          let y = (1 + angle)*Math.sin(angle);
+          fill(colorsSpiral[0][0], colorsSpiral[1][0], colorsSpiral[2][0]);
+          
+          if (hasStroke === true) {
+            stroke(0, 0, 0);
+            strokeWeight(1);          
+          } else {
+            noStroke();
+          }
+
+          ellipse((x * 0.02 * growthOfSpiral) + xSpiral,
+                  (y * 0.02 * growthOfSpiral) + ySpiral,
+                   growthOfSpiral * 0.3,
+                   growthOfSpiral * 0.3
+          );          
+          growthOfSpiral += 1.5;
+        }
 
 
         //CONGRATULATIONS
@@ -672,63 +740,25 @@
           mousePressed = () => {
             if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
               currentScore = 0;
-              countdown = 3000;
+              countdown = 30;
               goal += 3;
               growthOfSpiral = 1;
               level++;
               increaseSpeed();
-              for (let i = 0; i < positionsAndSpeedOfAliens.length; i++) {
-                positionsAndSpeedOfAliens[i][1] = random(0, 90);
+              for (let i = 0; i < aliensAttributes.length; i++) {
+                aliensAttributes[i][0] = random(0, 740);
+                aliensAttributes[i][1] = random(0, 90);
               }              
             }
           }
-          finalAnimationWithSpiral(random(0, 800), random(0, 660), false);
+          animationWithSpiral(random(100, 700), random(100, 560), false);
         }
 
-
-        //FINAL ANIMATION WITH SPIRAL
-        //***Final animation function in Draw function
-        const finalAnimationWithSpiral = (xSpiral, ySpiral, hasStroke) => {
-          for (let i = 0; i < colorsSpiral.length; i++) {
-            
-            if (colorsSpiral[i][0] < 0) {
-              colorsSpiral[i][1] = true;
-            } else if (colorsSpiral[i][0] > 255) {
-              colorsSpiral[i][1] = false;
-            }
-
-            if (colorsSpiral[i][1] === true) {
-              colorsSpiral[i][0] += 0.55;
-            } else {
-              colorsSpiral[i][0] -= 0.55;
-            }
-          }
-
-          let angle = 0.08 * growthOfSpiral;
-          let x = (1 + angle)*Math.cos(angle);
-          let y = (1 + angle)*Math.sin(angle);
-          fill(colorsSpiral[0][0], colorsSpiral[1][0], colorsSpiral[2][0]);
-          
-          if (hasStroke === true) {
-            stroke(0, 0, 0);
-            strokeWeight(1);          
-          } else {
-            noStroke();
-          }
-
-          ellipse((x * 0.013 * growthOfSpiral) + xSpiral,
-                  (y * 0.013 * growthOfSpiral) + ySpiral,
-                  growthOfSpiral * 0.2,
-                  growthOfSpiral * 0.2
-          );
-          
-          growthOfSpiral += 0.5;
-        }
 
         //GAME OVER
         //Game over function in Draw function
         const gameOver = () => {
-          finalAnimationWithSpiral(400, 330, true);
+          animationWithSpiral(400, 330, true);
           textSize(60);
           fill(255, 255, 255);
           text("GAME OVER", 203, 170);
@@ -749,14 +779,15 @@
           mousePressed = () => {
             if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
               currentScore = 0;
-              countdown = 3000;
+              countdown = 30;
               lives = 3;
               growthOfSpiral = 1;
               level = 1;
               goal = 6; 
-              for (let i = 0; i < positionsAndSpeedOfAliens.length; i++) {
-                positionsAndSpeedOfAliens[i][2] = random(5, 10);
-                positionsAndSpeedOfAliens[i][1] = random(0, 45);
+              for (let i = 0; i < aliensAttributes.length; i++) {
+                aliensAttributes[i][0] = random(0, 740);
+                aliensAttributes[i][1] = random(0, 90);
+                aliensAttributes[i][2] = random(5, 10);
               }              
             }
           }
@@ -785,15 +816,15 @@
               } else {
                 aliens();  
                 ufo();
-                lightOfUFO();
+                ufoBeam();
                 score();           
               }
             }
-          } else if (countdown === 0) {
+          } else if (countdown <= 0) {
             if (lives > 1) {
               timeIsUp();
             } else if (lives === 1 && currentScore < goal) {              
-              gameOver();
+          gameOver();
             }
           } else {
             congratulations();
