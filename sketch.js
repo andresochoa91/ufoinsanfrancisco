@@ -114,32 +114,37 @@ const sketchProc = (processingInstance) => {
     let moveMoonX = 850;
     let moveMoonY = 200;
     let moonPhase = 1;    //There are 3 phases in this code: 1: Waxing Crescent, 2: First Quarter, 3: Full.
+    let isMoonMoving = false;
  
     //***Moon function in Draw function
     const moon = () => {
+
+      if (colorOfSky[2] > 160 && isMoonMoving === true) {
+        moonPhase += 1;
+      }
+
       if (colorOfSky[2] <= 160) {
+        isMoonMoving = true;
         noStroke();
         fill(255, 255, 255);
         ellipse(moveMoonX, moveMoonY, 50, 50);
  
+        fill(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
         if (moonPhase === 1) {
-          fill(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
           ellipse(moveMoonX - 10, moveMoonY, 50, 50);
         } else if (moonPhase === 2) {
-          fill(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
           rect(moveMoonX - 50, moveMoonY - 30, 50, 70);
         } else if (moonPhase > 3) {
           moonPhase = 1
         }
-        moveMoonX -= 1;
-        moveMoonY -= 1;
+        moveMoonX -= 0.8;
+        moveMoonY -= 0.8;
       } else {
+        isMoonMoving = false;
         moveMoonX = 850;
         moveMoonY = 200;
       }
-      if (colorOfSky[2] === 161) {
-        moonPhase += 1;
-      }
+
     };
  
  
@@ -560,7 +565,7 @@ const sketchProc = (processingInstance) => {
       stroke(0, 0, 0);
       strokeWeight(3);
       fill(38, 25, 25);
-      ellipse(mouseXUfo, mouseYUfo + (ufoSize * 1) ,  70 * ufoSize, 70 * ufoSize);
+      ellipse(mouseXUfo, mouseYUfo + (ufoSize)     ,  70 * ufoSize, 70 * ufoSize);
       fill(112, 59, 112);
       ellipse(mouseXUfo, mouseYUfo + (ufoSize * 15), 150 * ufoSize, 50 * ufoSize);
       noStroke()
@@ -569,29 +574,41 @@ const sketchProc = (processingInstance) => {
     };
  
  
+    
     //UFO beam
-    //***ufo bean function in Draw function
-    const ufoBeam = () => {  //Change light
-      mousePressed = () => {
-        if (currentScore < goal && countdown > 0) {
-          let mouseXUfoBeam = mouseX;
-          let mouseYUfoBeam = mouseY;
-          let beamSize = mouseYUfoBeam * 0.006;
-          let isThereBeam = false;
-          if (mouseYUfoBeam > 210) {
-            mouseYUfoBeam = 220;
-            beamSize = 1.3;
+    let beamDuration = 0;
+
+    //Function to know if beam is generated
+    const isBeamGenerated = (hasClicked) => {
+      if (hasClicked || beamDuration !== 0) {
+        let mouseXUfoBeam = mouseX;
+        let mouseYUfoBeam = mouseY;
+        let beamSize = mouseYUfoBeam * 0.006;
+        let isThereBeam = false;
+        
+        if (mouseYUfoBeam > 210) {
+          mouseYUfoBeam = 220;
+          beamSize = 1.3;
+        }
+        
+        if (mouseY < 270) {
+          noStroke();
+          fill(255, 255, 255);
+          rect(mouseXUfoBeam - (70 * beamSize / 2),
+               mouseYUfoBeam + (65 * beamSize / 2),
+               70 * beamSize,
+               800
+          );
+          isThereBeam = true;
+          
+          if (hasClicked) {
+            beamDuration = 3;
+          } else {
+            if (beamDuration > 0) {
+              beamDuration--;
+            }
           }
-          if (mouseY < 270) {
-            noStroke();
-            fill(255, 255, 255);
-            rect(mouseXUfoBeam - (70 * beamSize / 2),
-                 mouseYUfoBeam + (65 * beamSize / 2),
-                 70 * beamSize,
-                 800
-            );
-            isThereBeam = true;
-          }
+          
           for (let i = 0; i < aliensAttributes.length; i++) {
             let xAliens = aliensAttributes[i][0];  //X position for aliens
             if (xAliens > mouseX - 49 && xAliens < mouseX + 49 && isThereBeam) {
@@ -605,6 +622,16 @@ const sketchProc = (processingInstance) => {
               currentScore++;
             } 
           }
+        }        
+      }
+    }
+
+    //***ufo bean function in Draw function
+    const ufoBeam = () => {  //Change light
+      isBeamGenerated(false);
+      mousePressed = () => {
+        if (currentScore < goal && countdown > 0) {
+          isBeamGenerated(true);                    
         }
       };
     };
@@ -653,6 +680,7 @@ const sketchProc = (processingInstance) => {
           currentScore = 0;
           countdown = 30;
           lives -= 1;
+          beamDuration = 0;
           for (let i = 0; i < aliensAttributes.length; i++) {
             aliensAttributes[i][0] = random(0, 740);
             aliensAttributes[i][1] = random(0, 90);
@@ -721,10 +749,10 @@ const sketchProc = (processingInstance) => {
       
       stroke(0, 0, 0);
       fill(255, 255, 255);
-      rect(280, 420, 200, 80);
+      rect(260, 420, 260, 75);
       fill(0, 0, 0);
       textSize(40)
-      text("Next level", 290, 470);
+      text(`Start level ${level + 1}`, 275, 470);
       mousePressed = () => {
         if (mouseX > 280 && mouseX < 480 && mouseY > 420 && mouseY < 500) {
           currentScore = 0;
@@ -732,6 +760,7 @@ const sketchProc = (processingInstance) => {
           goal += 3;
           growthOfSpiral = 1;
           level++;
+          beamDuration = 0;
           increaseSpeed();
           for (let i = 0; i < aliensAttributes.length; i++) {
             aliensAttributes[i][0] = random(0, 740);
@@ -772,6 +801,7 @@ const sketchProc = (processingInstance) => {
           growthOfSpiral = 1;
           level = 1;
           goal = 6; 
+          beamDuration = 0;
           for (let i = 0; i < aliensAttributes.length; i++) {
             aliensAttributes[i][0] = random(0, 740);
             aliensAttributes[i][1] = random(0, 90);
