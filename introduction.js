@@ -1,6 +1,6 @@
-export let isIntroduction = true;
+let isIntroduction = true;
 
-export const introduction = () => {
+const introduction = () => {
   fill(255, 255, 255, 230);
   rect(150, 10, 500, 630);
   fill(0, 0, 0);
@@ -23,3 +23,5 @@ export const introduction = () => {
     }
   }
 };
+
+console.log(isIntroduction);

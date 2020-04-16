@@ -69,7 +69,7 @@ const sketchProc = (processingInstance) => {
     //***Sky function in Draw function
     const sky =  () => {
       background(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
-      if (sunMovement < -400 && colorOfSky[2] > 0) {
+      if (sunMovement < -300 && colorOfSky[2] > 0) {
         if (colorOfSky[1] > 0) {
           colorOfSky[1] -= 2;
         } else {
@@ -80,7 +80,7 @@ const sketchProc = (processingInstance) => {
             colorOfSky[2] -= 2;
           }
         }
-      } else if (sunMovement > -200 && colorOfSky[1] < 228) {  //When the sun.....
+      } else if (sunMovement > -200 && colorOfSky[1] < 228) { 
         if (colorOfSky[2] < 255) {
           colorOfSky[2] += 2;
         } else {
@@ -102,10 +102,10 @@ const sketchProc = (processingInstance) => {
       stroke(0, 0, 0);
       strokeWeight(3);
       fill(0, 0, 0);
-      sunMovement -= 2;
+      sunMovement--;
       
-      if (colorOfSky[2] <= 60 && sunMovement === -1300) {    //Separate in different functions
-        sunMovement = 750;
+      if (colorOfSky[2] <= 60 && sunMovement === -800) {   
+        sunMovement = 450;
       }
     };
  
@@ -171,16 +171,14 @@ const sketchProc = (processingInstance) => {
           ellipse(allTheStars[i][0], allTheStars[i][1], sizeXStar, sizeYStar);
           
           if (isMidnight) {
-            sizeXStar -= 0.0004;
-            sizeYStar -= 0.0004;
+            sizeXStar -= 0.0003;
+            sizeYStar -= 0.0003;
           } else {
             sizeXStar += 0.0004;
             sizeYStar += 0.0004;
           }
           
           if (sizeXStar > 4) {
-            sizeXStar -= 0.0004;
-            sizeYStar -= 0.0004;
             isMidnight = true;
           } 
  
@@ -431,7 +429,7 @@ const sketchProc = (processingInstance) => {
     const reductionColorNight = () => {
       if (colorOfSky[2] < 255) {
         if (isMidnight) {
-          darkenColor += 0.75;
+          darkenColor += 0.5;
           rgbCloudsColor += 0.75
         } else {
           darkenColor -= 0.75;
@@ -443,7 +441,6 @@ const sketchProc = (processingInstance) => {
         rgbCloudsColor = 255;
       }
     }
-    reductionColorNight();
  
  
     //SIDEWALK AND GRASS
@@ -602,7 +599,7 @@ const sketchProc = (processingInstance) => {
           isThereBeam = true;
           
           if (hasClicked) {
-            beamDuration = 3;
+            beamDuration = 2;
           } else {
             if (beamDuration > 0) {
               beamDuration--;
@@ -630,7 +627,7 @@ const sketchProc = (processingInstance) => {
     const ufoBeam = () => {  //Change light
       isBeamGenerated(false);
       mousePressed = () => {
-        if (currentScore < goal && countdown > 0) {
+        if (currentScore < goal && countdown > 0 && !isKeyPressed) {
           isBeamGenerated(true);                    
         }
       };
