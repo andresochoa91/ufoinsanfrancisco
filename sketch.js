@@ -64,29 +64,35 @@ const sketchProc = processingInstance => {
     };
 
     //SKY
-    let colorOfSky = [0, 228, 255]; //[R, G, B], Also used in Sun, Moon, Stars, Pyramid, Salesforce,
+    let colorOfSky = {
+      R: 0,
+      G: 228,
+      B: 255
+    }
+
+    //let colorOfSky = [0, 228, 255]; //[R, G, B], Also used in Sun, Moon, Stars, Pyramid, Salesforce,
     //Buildings, Paited Ladies, Reduction Color Night
 
     //***Sky function in Draw function
     const sky = () => {
-      background(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
+      background(colorOfSky.R, colorOfSky.G, colorOfSky.B);
 
-      if (sunPosition < -300 && colorOfSky[2] > 0) {
-        if (colorOfSky[1] > 0) {
-          colorOfSky[1] -= 2;
+      if (sunPosition < -300 && colorOfSky.B > 0) {
+        if (colorOfSky.G > 0) {
+          colorOfSky.G -= 2;
         } else {
-          colorOfSky[1] = 0;
-          if (colorOfSky[2] <= 40) {
-            colorOfSky[2] = 40;
+          colorOfSky.G = 0;
+          if (colorOfSky.B <= 40) {
+            colorOfSky.B = 40;
           } else {
-            colorOfSky[2] -= 2;
+            colorOfSky.B -= 2;
           }
         }
-      } else if (sunPosition > -200 && colorOfSky[1] < 228) {
-        if (colorOfSky[2] < 255) {
-          colorOfSky[2] += 2;
+      } else if (sunPosition > -200 && colorOfSky.G < 228) {
+        if (colorOfSky.B < 255) {
+          colorOfSky.B += 2;
         } else {
-          colorOfSky[1] += 2;
+          colorOfSky.G += 2;
         }
       }
     };
@@ -105,7 +111,7 @@ const sketchProc = processingInstance => {
       fill(0, 0, 0);
       sunPosition--;
 
-      if (colorOfSky[2] <= 60 && sunPosition === -800) {
+      if (colorOfSky.B <= 60 && sunPosition === -800) {
         sunPosition = 450;
       }
     };
@@ -118,17 +124,17 @@ const sketchProc = processingInstance => {
 
     //***Moon function in Draw function
     const moon = () => {
-      if (colorOfSky[2] > 160 && isMoonMoving === true) {
+      if (colorOfSky.B > 160 && isMoonMoving === true) {
         moonPhase += 1;
       }
 
-      if (colorOfSky[2] <= 160) {
+      if (colorOfSky.B <= 160) {
         isMoonMoving = true;
         noStroke();
         fill(255, 255, 255);
         ellipse(moveMoonX, moveMoonY, 50, 50);
 
-        fill(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
+        fill(colorOfSky.R, colorOfSky.G, colorOfSky.B);
         if (moonPhase === 1) {
           ellipse(moveMoonX - 10, moveMoonY, 50, 50);
         } else if (moonPhase === 2) {
@@ -156,16 +162,16 @@ const sketchProc = processingInstance => {
     for (let i = 0; i < 50; i++) {
       let randomXStars = random(0, 800);
       let randomYStars = random(0, 400);
-      allTheStars.push([randomXStars, randomYStars]);
+      allTheStars.push({"xStars": randomXStars, "yStars": randomYStars});
     }
 
     //***Stars function in Draw function
     const stars = () => {
       for (var i = 0; i < allTheStars.length; i++) {
-        if (colorOfSky[2] < 255) {
+        if (colorOfSky.B < 255) {
           fill(255, 255, 255);
           noStroke();
-          ellipse(allTheStars[i][0], allTheStars[i][1], sizeXStar, sizeYStar);
+          ellipse(allTheStars[i].xStars, allTheStars[i].yStars, sizeXStar, sizeYStar);
 
           if (isMidnight) {
             sizeXStar -= 0.0003;
@@ -179,7 +185,7 @@ const sketchProc = processingInstance => {
             isMidnight = true;
           }
 
-          if (colorOfSky[2] > 250) {
+          if (colorOfSky.B > 250) {
             sizeXStar = 0.0004;
             sizeYStar = 0.0004;
             isMidnight = false;
@@ -197,13 +203,13 @@ const sketchProc = processingInstance => {
       let randomGPyramid = random(0, 255);
       let randomBPyramid = random(0, 255);
 
-      if (colorOfSky[2] < 255) {
+      if (colorOfSky.B < 255) {
         fill(randomRPyramid, randomGPyramid, randomBPyramid);
       } else {
         fill(
-          buildingsAttributes[0][3][0], //Position 0, but it can be used any other position of the array
-          buildingsAttributes[0][3][1], //Position 0, but it can be used any other position of the array
-          buildingsAttributes[0][3][2] //Position 0, but it can be used any other position of the array
+          buildingsAttributes[0].color.R, //Position 0, but it can be used any other position of the array
+          buildingsAttributes[0].color.G, //Position 0, but it can be used any other position of the array
+          buildingsAttributes[0].color.B //Position 0, but it can be used any other position of the array
         );
       }
 
@@ -218,7 +224,7 @@ const sketchProc = processingInstance => {
       let randomGSalesforceColor = random(0, 255);
       let randomBSalesforceColor = random(0, 255);
 
-      if (colorOfSky[2] < 255) {
+      if (colorOfSky.B < 255) {
         fill(
           randomRSalesforceColor,
           randomGSalesforceColor,
@@ -226,9 +232,9 @@ const sketchProc = processingInstance => {
         );
       } else {
         fill(
-          buildingsAttributes[1][3][0], //Position 1, but it can be used any other position of the array
-          buildingsAttributes[1][3][1], //Position 1, but it can be used any other position of the array
-          buildingsAttributes[1][3][2] //Position 1, but it can be used any other position of the array
+          buildingsAttributes[1].color.R, //Position 1, but it can be used any other position of the array
+          buildingsAttributes[1].color.G, //Position 1, but it can be used any other position of the array
+          buildingsAttributes[1].color.B //Position 1, but it can be used any other position of the array
         );
       }
 
@@ -240,7 +246,7 @@ const sketchProc = processingInstance => {
       line(505, 120, 534, 120);
 
       noStroke();
-      fill(colorOfSky[0], colorOfSky[1], colorOfSky[2]);
+      fill(colorOfSky.R, colorOfSky.G, colorOfSky.B);
       rect(500, 79, 40, 40);
     };
 
@@ -293,12 +299,16 @@ const sketchProc = processingInstance => {
       let xOfBuildings = random(-40, 800);
       let widthOfBuildings = random(30, 50);
       let heightOfBuildings = random(-200, -100);
-      buildingsAttributes.push([
-        xOfBuildings,
-        widthOfBuildings,
-        heightOfBuildings,
-        [random(140, 180), random(140, 180), random(140, 180)] //[R, G, B] Random color for Buildings
-      ]);
+      buildingsAttributes.push({
+        "xOfBuildings": xOfBuildings,
+        "widthOfBuildings": widthOfBuildings,
+        "heightOfBuildings": heightOfBuildings,
+        "color": {
+          R: random(140, 180), 
+          B: random(140, 180), 
+          B: random(140, 180) 
+        }
+      });
     }
 
     //***Buildings function in Draw function
@@ -308,15 +318,15 @@ const sketchProc = processingInstance => {
       for (let i = 0; i < buildingsAttributes.length; i++) {
         let bA = buildingsAttributes[i];
 
-        if (colorOfSky[2] < 255) {
+        if (colorOfSky.B < 255) {
           fill(random(0, 255), random(0, 255), random(0, 255));
         } else {
-          fill(bA[3][0], bA[3][1], bA[3][2]);
+          fill(bA.color.R, bA.color.G, bA.color.B);
         }
 
         stroke(0, 0, 0);
         strokeWeight(3);
-        rect(bA[0], 400, bA[1], bA[2]);
+        rect(bA.xOfBuildings, 400, bA.widthOfBuildings, bA.heightOfBuildings);
       }
     };
 
@@ -350,7 +360,7 @@ const sketchProc = processingInstance => {
 
         let randomNumberChangingPaintedLadies = Math.round(random(1, 2));
 
-        if (colorOfSky[2] < 255) {
+        if (colorOfSky.B < 255) {
           if (randomNumberChangingPaintedLadies % 2 === 0) {
             fill(random(0, 255), random(0, 255), random(0, 255));
           } else {
@@ -442,7 +452,7 @@ const sketchProc = processingInstance => {
     let colorDarkness = 0; //Applied in Aliens and Crosswalk, street and grass.
 
     const reductionColorNight = () => {
-      if (colorOfSky[2] < 255) {
+      if (colorOfSky.B < 255) {
         if (isMidnight) {
           colorDarkness += 0.5;
           rgbCloudsColor += 0.75;
@@ -452,7 +462,7 @@ const sketchProc = processingInstance => {
         }
       }
 
-      if (colorOfSky[2] > 250) {
+      if (colorOfSky.B > 250) {
         colorDarkness = 0;
         rgbCloudsColor = 255;
       }
@@ -488,30 +498,30 @@ const sketchProc = processingInstance => {
       let speedAliens = random(5, 10);
       let newXAliens = (0, 800);
       let isGoingToTheRight = true;
-      aliensAttributes.push([
-        xAliens,
-        yAliens,
-        speedAliens,
-        newXAliens,
-        isGoingToTheRight
-      ]);
+      aliensAttributes.push({
+        "xAliens": xAliens,
+        "yAliens": yAliens,
+        "speedAliens": speedAliens,
+        "newXAliens": newXAliens,
+        "isGoingToTheRight": isGoingToTheRight
+      });
     }
 
     //Function to increase speed of aliens. Inside Congratulation function
     const increaseSpeed = () => {
       for (let i = 0; i < aliensAttributes.length; i++) {
-        aliensAttributes[i][2] += aliensAttributes[i][2] * 0.05;
+        aliensAttributes[i].speedAliens += aliensAttributes[i].speedAliens * 0.05;
       }
     };
 
     //***Aliens function in Draw function
     const aliens = () => {
       for (let i = 0; i < aliensAttributes.length; i++) {
-        let xPosAlien = aliensAttributes[i][0]; //X position for aliens
-        let yPosAlien = aliensAttributes[i][1]; //Y position for aliens
-        let speedAlien = aliensAttributes[i][2]; //Speed for aliens
-        let newPosAlien = aliensAttributes[i][3]; //New position x for aliens
-        let isRight = aliensAttributes[i][4]; //True or false to turn rigth or left
+        let xPosAlien = aliensAttributes[i].xAliens; //X position for aliens
+        let yPosAlien = aliensAttributes[i].yAliens; //Y position for aliens
+        let speedAlien = aliensAttributes[i].speedAliens; //Speed for aliens
+        let newPosAlien = aliensAttributes[i].newXAliens; //New position x for aliens
+        let isRight = aliensAttributes[i].isGoingToTheRight; //True or false to turn rigth or left
 
         noStroke();
         fill(0, 0, 0);
@@ -552,20 +562,20 @@ const sketchProc = processingInstance => {
         arc(xPosAlien, 620 - yPosAlien, 12, 10, 0, PI);
 
         if (newPosAlien > xPosAlien && isRight) {
-          aliensAttributes[i][0] += speedAlien;
+          aliensAttributes[i].xAliens += speedAlien;
         } else {
           if (isRight) {
-            aliensAttributes[i][4] = false;
-            aliensAttributes[i][3] = random(-400, 1200);
+            aliensAttributes[i].isGoingToTheRight = false;
+            aliensAttributes[i].newXAliens = random(-400, 1200);
           }
         }
 
         if (newPosAlien <= xPosAlien && !isRight) {
-          aliensAttributes[i][0] -= speedAlien;
+          aliensAttributes[i].xAliens -= speedAlien;
         } else {
           if (!isRight) {
-            aliensAttributes[i][4] = true;
-            aliensAttributes[i][3] = random(-400, 1200);
+            aliensAttributes[i].isGoingToTheRight = true;
+            aliensAttributes[i].newXAliens = random(-400, 1200);
           }
         }
       }
@@ -630,14 +640,14 @@ const sketchProc = processingInstance => {
           }
 
           for (let i = 0; i < aliensAttributes.length; i++) {
-            let xAliens = aliensAttributes[i][0];
+            let xAliens = aliensAttributes[i].xAliens;
             if (xAliens > mouseX - 49 && xAliens < mouseX + 49 && isThereBeam) {
               let randomStart = random(1, 2);
-              aliensAttributes[i][1] = random(0, 90);
+              aliensAttributes[i].yAliens = random(0, 90);
               if (randomStart >= 1.5) {
-                aliensAttributes[i][0] = -400;
+                aliensAttributes[i].xAliens = -400;
               } else {
-                aliensAttributes[i][0] = 1000;
+                aliensAttributes[i].xAliens = 1000;
               }
               currentScore++;
             }
@@ -702,8 +712,8 @@ const sketchProc = processingInstance => {
           beamDuration = 0;
 
           for (let i = 0; i < aliensAttributes.length; i++) {
-            aliensAttributes[i][0] = random(0, 740);
-            aliensAttributes[i][1] = random(0, 90);
+            aliensAttributes[i].xAliens = random(0, 740);
+            aliensAttributes[i].yAliens = random(0, 90);
           }
         }
       };
@@ -784,8 +794,8 @@ const sketchProc = processingInstance => {
           increaseSpeed();
 
           for (let i = 0; i < aliensAttributes.length; i++) {
-            aliensAttributes[i][0] = random(0, 740);
-            aliensAttributes[i][1] = random(0, 90);
+            aliensAttributes[i].xAliens = random(0, 740);
+            aliensAttributes[i].yAliens = random(0, 90);
           }
         }
       };
@@ -824,9 +834,9 @@ const sketchProc = processingInstance => {
           goal = 6;
           beamDuration = 0;
           for (let i = 0; i < aliensAttributes.length; i++) {
-            aliensAttributes[i][0] = random(0, 740); //new x for aliens
-            aliensAttributes[i][1] = random(0, 90); //new y for aliens
-            aliensAttributes[i][2] = random(5, 10); //new speed for aliens
+            aliensAttributes[i].xAliens = random(0, 740); //new x for aliens
+            aliensAttributes[i].yAliens = random(0, 90); //new y for aliens
+            aliensAttributes[i].speedAliens = random(5, 10); //new speed for aliens
           }
         }
       };
