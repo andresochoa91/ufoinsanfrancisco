@@ -70,7 +70,7 @@ const sketchProc = processingInstance => {
       B: 255
     }
 
-    //let colorOfSky = [0, 228, 255]; //[R, G, B], Also used in Sun, Moon, Stars, Pyramid, Salesforce,
+    //let colorOfSky also used in Sun, Moon, Stars, Pyramid, Salesforce,
     //Buildings, Paited Ladies, Reduction Color Night
 
     //***Sky function in Draw function
@@ -156,7 +156,7 @@ const sketchProc = processingInstance => {
     let sizeYStar = 0.0004;
     let isMidnight = false; //Also used in Reduction Color Night
 
-    //Array with position of random stars
+    //Array with random position of stars
     let allTheStars = [];
 
     for (let i = 0; i < 50; i++) {
@@ -209,7 +209,7 @@ const sketchProc = processingInstance => {
         fill(
           buildingsAttributes[0].color.R, //Position 0, but it can be used any other position of the array
           buildingsAttributes[0].color.G, //Position 0, but it can be used any other position of the array
-          buildingsAttributes[0].color.B //Position 0, but it can be used any other position of the array
+          buildingsAttributes[0].color.B  //Position 0, but it can be used any other position of the array
         );
       }
 
@@ -234,7 +234,7 @@ const sketchProc = processingInstance => {
         fill(
           buildingsAttributes[1].color.R, //Position 1, but it can be used any other position of the array
           buildingsAttributes[1].color.G, //Position 1, but it can be used any other position of the array
-          buildingsAttributes[1].color.B //Position 1, but it can be used any other position of the array
+          buildingsAttributes[1].color.B  //Position 1, but it can be used any other position of the array
         );
       }
 
@@ -259,7 +259,11 @@ const sketchProc = processingInstance => {
       let xForClouds = random(0, 800);
       let yForClouds = 50 * i - 50;
       let speedForClouds = random(1, 3);
-      cloudsAttributes.push([xForClouds, yForClouds, speedForClouds]);
+      cloudsAttributes.push({
+        "xForClouds": xForClouds, 
+        "yForClouds": yForClouds, 
+        "speedForClouds": speedForClouds
+      });
     }
 
     //***Clouds function in Draw function
@@ -268,23 +272,23 @@ const sketchProc = processingInstance => {
       fill(rgbCloudsColor, rgbCloudsColor, rgbCloudsColor);
 
       for (let i = 0; i < cloudsAttributes.length; i++) {
-        let xCloud = cloudsAttributes[i][0];
-        let yCloud = cloudsAttributes[i][1];
+        let xCloud = cloudsAttributes[i].xForClouds;
+        let yCloud = cloudsAttributes[i].yForClouds;
         ellipse(xCloud, yCloud, 126, 97);
         ellipse(xCloud + 62, yCloud, 70, 60);
         ellipse(xCloud - 62, yCloud, 70, 60);
 
         if (i % 2 === 0) {
           if (xCloud > 1000) {
-            cloudsAttributes[i][0] = -200;
+            cloudsAttributes[i].xForClouds = -200;
           } else {
-            cloudsAttributes[i][0] += cloudsAttributes[i][2];
+            cloudsAttributes[i].xForClouds += cloudsAttributes[i].speedForClouds;
           }
         } else {
           if (xCloud < -100) {
-            cloudsAttributes[i][0] = 1000;
+            cloudsAttributes[i].xForClouds = 1000;
           } else {
-            cloudsAttributes[i][0] -= cloudsAttributes[i][2];
+            cloudsAttributes[i].xForClouds -= cloudsAttributes[i].speedForClouds;
           }
         }
       }
@@ -305,7 +309,7 @@ const sketchProc = processingInstance => {
         "heightOfBuildings": heightOfBuildings,
         "color": {
           R: random(140, 180), 
-          B: random(140, 180), 
+          G: random(140, 180), 
           B: random(140, 180) 
         }
       });
@@ -722,33 +726,41 @@ const sketchProc = processingInstance => {
     //ANIMATION WITH SPIRAL: To be used in Congratulations and Game Over
     let growthOfSpiral = 1;
 
-    //Array of random colors for animation with spiral
-    let colorsSpiral = [
-      [random(0, 255), true],
-      [random(0, 255), true],
-      [random(0, 255), true]
-    ];
+    let spiralColorAttributes = {
+      R: {
+        color: random(0, 255),
+        validation: true
+      },
+      G: {
+        color: random(0, 255),
+        validation: true
+      },
+      B: {
+        color: random(0, 255),
+        validation: true
+      }
+    }
 
     //***Animation with spiral function in Draw function
     const animationWithSpiral = (xSpiral, ySpiral, hasStroke) => {
-      for (let i = 0; i < colorsSpiral.length; i++) {
-        if (colorsSpiral[i][0] < 0) {
-          colorsSpiral[i][1] = true;
-        } else if (colorsSpiral[i][0] > 255) {
-          colorsSpiral[i][1] = false;
+      for (let key in spiralColorAttributes) {
+        if (spiralColorAttributes[key].color < 0) {
+          spiralColorAttributes[key].validation = true;
+        } else if (spiralColorAttributes[key].color > 255) {
+          spiralColorAttributes[key].validation = false;
         }
 
-        if (colorsSpiral[i][1] === true) {
-          colorsSpiral[i][0] += 2;
+        if (spiralColorAttributes[key].validation === true) {
+          spiralColorAttributes[key].color += 2;
         } else {
-          colorsSpiral[i][0] -= 2;
+          spiralColorAttributes[key].color -= 2;
         }
       }
 
       let angle = 0.08 * growthOfSpiral;
       let x = (1 + angle) * Math.cos(angle);
       let y = (1 + angle) * Math.sin(angle);
-      fill(colorsSpiral[0][0], colorsSpiral[1][0], colorsSpiral[2][0]);
+      fill(spiralColorAttributes.R.color, spiralColorAttributes.G.color, spiralColorAttributes.B.color);
 
       if (hasStroke === true) {
         stroke(0, 0, 0);
