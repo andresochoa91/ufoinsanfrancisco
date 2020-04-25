@@ -1,5 +1,7 @@
 //THE FOLLOWING CODE IS WRITEN BY JOHAN ANDRES OCHOA QUIROZ
-//jandresochoa91@gmail.com
+//Email: jandresochoa91@gmail.com
+//GitHub: https://github.com/andresochoa91
+//Linkedin: https://www.linkedin.com/in/jandresochoa91/
 
 const sketchProc = processingInstance => {
   with (processingInstance) {
@@ -207,9 +209,9 @@ const sketchProc = processingInstance => {
         fill(randomRPyramid, randomGPyramid, randomBPyramid);
       } else {
         fill(
-          buildingsAttributes[0].color.R, //Position 0, but it can be used any other position of the array
-          buildingsAttributes[0].color.G, //Position 0, but it can be used any other position of the array
-          buildingsAttributes[0].color.B  //Position 0, but it can be used any other position of the array
+          buildingsAttributes[0].color.R, //It is taking attributes of building 0, but it can be used whichever
+          buildingsAttributes[0].color.G, //It is taking attributes of building 0, but it can be used whichever
+          buildingsAttributes[0].color.B  //It is taking attributes of building 0, but it can be used whichever
         );
       }
 
@@ -232,9 +234,9 @@ const sketchProc = processingInstance => {
         );
       } else {
         fill(
-          buildingsAttributes[1].color.R, //Position 1, but it can be used any other position of the array
-          buildingsAttributes[1].color.G, //Position 1, but it can be used any other position of the array
-          buildingsAttributes[1].color.B  //Position 1, but it can be used any other position of the array
+          buildingsAttributes[1].color.R, //It is taking attributes of building 1, but it can be used whichever
+          buildingsAttributes[1].color.G, //It is taking attributes of building 1, but it can be used whichever
+          buildingsAttributes[1].color.B  //It is taking attributes of building 1, but it can be used whichever
         );
       }
 
@@ -694,9 +696,9 @@ const sketchProc = processingInstance => {
       }
     };
 
-    //TIME IS UP
-    //***Time is up function in Draw function
-    const timeIsUp = () => {
+    //TIME'S UP
+    //***Time's up function in Draw function
+    const timesUp = () => {
       textSize(60);
       fill(255, 255, 255);
       text("Time's up", 255, 170);
@@ -883,7 +885,7 @@ const sketchProc = processingInstance => {
         }
       } else if (countdown <= 0) {
         if (lives > 1) {
-          timeIsUp();
+          timesUp();
         } else if (lives === 1 && currentScore < goal) {
           gameOver();
         }
