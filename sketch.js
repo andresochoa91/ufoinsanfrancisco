@@ -523,10 +523,10 @@ const sketchProc = processingInstance => {
     //***Aliens function in Draw function
     const aliens = () => {
       for (let i = 0; i < aliensAttributes.length; i++) {
-        let xPosAlien = aliensAttributes[i].xAliens; //X position for aliens
-        let yPosAlien = aliensAttributes[i].yAliens; //Y position for aliens
-        let speedAlien = aliensAttributes[i].speedAliens; //Speed for aliens
-        let newPosAlien = aliensAttributes[i].newXAliens; //New position x for aliens
+        let xPosAlien = aliensAttributes[i].xAliens;
+        let yPosAlien = aliensAttributes[i].yAliens;
+        let speedAlien = aliensAttributes[i].speedAliens;
+        let newPosAlien = aliensAttributes[i].newXAliens;
         let isRight = aliensAttributes[i].isGoingToTheRight; //True or false to turn rigth or left
 
         noStroke();
